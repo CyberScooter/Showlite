@@ -7,7 +7,6 @@ import { authenticateToken } from "../middleware/authenticated";
 let app = express.Router();
 
 app.post("/login", async (req, res) => {
-  console.log(req.body);
   try {
     const { username, password } = req.body;
     let userFound: any = await pool.query(
@@ -59,7 +58,6 @@ app.post("/register", async (req, res) => {
     );
     delete inserted.rows[0].hash;
 
-    console.log(inserted.rows[0]);
     return res.json({
       user: inserted.rows[0],
       token: jwt.sign(
