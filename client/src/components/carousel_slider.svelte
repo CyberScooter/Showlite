@@ -1,28 +1,22 @@
 <!-- CSS AND FUNCTIONS FROM https://tailwinduikit.com/components/E-commerce/Components/carousels -->
 <script>
-    import MovieCard from '../components/movie_card.svelte';
-	import { onMount } from 'svelte';
+	import MovieCard from '../components/movie_card.svelte';
+	export let cover_size;
 
-	onMount(() => {
-		let defaultTransform = 0;
-		function goNext() {
-			defaultTransform = defaultTransform - 398;
-			var slider = document.getElementById('slider');
-			if (Math.abs(defaultTransform) >= slider.scrollWidth / 1.7) defaultTransform = 0;
-			slider.style.transform = 'translateX(' + defaultTransform + 'px)';
-		}
+	let defaultTransform = 0;
+	let slider;
 
-		var next = document.getElementById('next');
-		next.addEventListener('click', goNext);
-		function goPrev() {
-			var slider = document.getElementById('slider');
-			if (Math.abs(defaultTransform) === 0) defaultTransform = 0;
-			else defaultTransform = defaultTransform + 398;
-			slider.style.transform = 'translateX(' + defaultTransform + 'px)';
-		}
-		var prev = document.getElementById('prev');
-		prev.addEventListener('click', goPrev);
-	});
+	function goNext() {
+		defaultTransform = defaultTransform - 398;
+		if (Math.abs(defaultTransform) >= slider.scrollWidth / 1.7) defaultTransform = 0;
+		slider.style.transform = 'translateX(' + defaultTransform + 'px)';
+	}
+
+	function goPrev() {
+		if (Math.abs(defaultTransform) === 0) defaultTransform = 0;
+		else defaultTransform = defaultTransform + 398;
+		slider.style.transform = 'translateX(' + defaultTransform + 'px)';
+	}
 </script>
 
 <div class="flex items-center justify-center w-full h-full py-24 sm:py-8 px-4">
@@ -31,6 +25,7 @@
 			aria-label="slide backward"
 			class="absolute z-30 left-0 ml-10 focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 cursor-pointer"
 			id="prev"
+			on:click={goPrev}
 		>
 			<svg
 				class="dark:text-gray-900"
@@ -53,249 +48,15 @@
 			<div
 				id="slider"
 				class="h-full flex lg:gap-8 md:gap-6 gap-14 items-center justify-start transition ease-out duration-700"
+				bind:this={slider}
 			>
-
-
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-
-
-
-
-				<!-- <div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/fDngH9G/carosel-1.png"
-						alt="black chair and white table"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 1
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/DWrGxX6/carosel-2.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/tCfVky2/carosel-3.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/rFsGfr5/carosel-4.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/fDngH9G/carosel-1.png"
-						alt="black chair and white table"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/DWrGxX6/carosel-2.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/tCfVky2/carosel-3.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/rFsGfr5/carosel-4.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/fDngH9G/carosel-1.png"
-						alt="black chair and white table"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/DWrGxX6/carosel-2.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/tCfVky2/carosel-3.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-shrink-0 relative w-full sm:w-auto">
-					<img
-						src="https://i.ibb.co/rFsGfr5/carosel-4.png"
-						alt="sitting area"
-						class="object-cover object-center w-full"
-					/>
-					<div class="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-						<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-							Catalog 2
-						</h2>
-						<div class="flex h-full items-end pb-6">
-							<h3
-								class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-							>
-								Minimal Interior
-							</h3>
-						</div>
-					</div>
-				</div> -->
-
-
+				<MovieCard {cover_size} />
+				<MovieCard {cover_size} />
+				<MovieCard {cover_size} />
+				<MovieCard {cover_size} />
+				<MovieCard {cover_size} />
+				<MovieCard {cover_size} />
+				
 			</div>
 		</div>
 
@@ -303,6 +64,7 @@
 			aria-label="slide forward"
 			class="absolute z-30 right-0 mr-10 focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
 			id="next"
+			on:click={goNext}
 		>
 			<svg
 				class="dark:text-gray-900"
