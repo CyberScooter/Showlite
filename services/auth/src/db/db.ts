@@ -1,6 +1,5 @@
-import * as pg from 'pg'
-const { Pool } = pg
+import { createPool } from "slonik";
 
-const pool = new Pool({connectionString: process.env.DATABASE_URL})
+const pool = createPool(process.env.DATABASE_URL as string);
 
-export default pool
+export default pool;

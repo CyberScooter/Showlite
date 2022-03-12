@@ -1,32 +1,31 @@
 import * as express from "express";
 import pool from "../db/db";
+import { sql } from "slonik";
 import * as jwt from "jsonwebtoken";
 import { genSaltSync, hashSync, compare } from "bcrypt";
 import { authenticateToken } from "../middleware/authenticated";
+import { json } from "body-parser";
 
 let app = express.Router();
 
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    let userFound: any = await pool.query(
-      "select * from users where username=$1",
-      [username]
+    let userFound: any = await pool.maybeOne(
+      sql`select * from users where username=${username}`
     );
 
-    if (userFound.rows[0].rowCount > 0) return { error: "User does not exist" };
+    if (!userFound) return res.json({ error: "User does not exist" });
 
-    const match = await compare(password, userFound.rows[0].hash);
-    delete userFound.rows[0].hash;
+    const match = await compare(password, userFound.hash);
+    delete userFound.hash;
 
     if (match) {
       return res.json({
-        user: userFound.rows[0],
-        token: jwt.sign(
-          { id: userFound.rows[0].id },
-          process.env.JWT_TOKEN_SECRET,
-          { expiresIn: "7d" }
-        ),
+        user: userFound,
+        token: jwt.sign({ id: userFound.id }, process.env.JWT_TOKEN_SECRET, {
+          expiresIn: "7d",
+        }),
       });
     }
 
@@ -39,12 +38,12 @@ app.post("/login", async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    let userFound = await pool.query(
-      "SELECT id from users where username=$1 OR email=$2",
-      [username, email]
+
+    let userFound = await pool.maybeOne(
+      sql`SELECT id from users where username=${username} OR email=${email}`
     );
 
-    if (userFound.rowCount > 0)
+    if (userFound)
       return res.json({
         error: "User already registered under this email or username",
       });
@@ -52,19 +51,16 @@ app.post("/register", async (req, res) => {
     const salt = genSaltSync(10);
     const hash = hashSync(password, salt);
 
-    let inserted = await pool.query(
-      "insert into users(username, email, hash, created_at, updated_at) values ($1, $2, $3, now(), now()) returning *",
-      [username, email, hash]
+    let inserted = await pool.one(
+      sql`insert into users(username, email, hash, created_at, updated_at) values (${username}, ${email}, ${hash}, now(), now()) returning *`
     );
-    delete inserted.rows[0].hash;
+    delete inserted.hash;
 
     return res.json({
-      user: inserted.rows[0],
-      token: jwt.sign(
-        { id: inserted.rows[0].id },
-        process.env.JWT_TOKEN_SECRET,
-        { expiresIn: "7d" }
-      ),
+      user: inserted,
+      token: jwt.sign({ id: inserted.id }, process.env.JWT_TOKEN_SECRET, {
+        expiresIn: "7d",
+      }),
     });
   } catch (e) {
     return res.json({ error: "Internal server error" });
@@ -73,14 +69,14 @@ app.post("/register", async (req, res) => {
 
 app.get("/data", authenticateToken, async (req, res) => {
   try {
-    let userFound = await pool.query("SELECT * from users where id=$1", [
-      (req as any).user.id,
-    ]);
+    let userFound = await pool.one(
+      sql`SELECT * from users where id=${(req as any).user.id}`
+    );
 
-    delete userFound.rows[0].hash;
-    delete userFound.rows[0].email;
+    delete userFound.hash;
+    delete userFound.email;
 
-    return res.json(userFound.rows[0]);
+    return res.json(userFound);
   } catch (e) {
     return res.json({ error: "Internal server error" });
   }
