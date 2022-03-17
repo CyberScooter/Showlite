@@ -14,7 +14,7 @@
 </script>
 
 {#if cover_size === 'large'}
-	<div class="flex flex-shrink-0 relative w-full sm:w-auto">
+	<div class="cursor-pointer flex flex-shrink-0 relative w-full sm:w-auto">
 		<img
 			src="static/film-poster-placeholder.png"
 			alt="Movie Cover"
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 {:else if cover_size === 'small'}
-	<div class="flex flex-shrink-0 relative w-full sm:w-auto">
+	<div class="cursor-pointer flex flex-shrink-0 relative w-full sm:w-auto">
 		<img
 			src="static/film-poster-placeholder.png"
 			alt="Movie Cover"
