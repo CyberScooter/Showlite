@@ -1,6 +1,6 @@
 <script>
-    import MovieInfo from '../components/movie_info.svelte';
-	import Pagination from '../components/pagination.svelte';
+    import MovieInfo from '../components/MovieInfo.svelte';
+	import Pagination from '../components/Pagination.svelte';
 </script>
 
 <svelte:head>

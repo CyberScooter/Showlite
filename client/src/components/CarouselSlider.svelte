@@ -1,10 +1,5 @@
 <script>
-<<<<<<< HEAD:client/src/components/carousel_slider.svelte
-	import MovieCard from '../components/movie_card.svelte';
-
-=======
 	import MovieCard from './MovieCard.svelte';
->>>>>>> 37b4d8820766a5b9365754f0a233e3d1b7656f6f:client/src/components/CarouselSlider.svelte
 	export let cover_size;
 
 	let defaultTransform = 0;
