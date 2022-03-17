@@ -1,5 +1,5 @@
 <script>
-	import CarouselSlider from '../components/carousel_slider.svelte';
+	import CarouselSlider from '../components/CarouselSlider.svelte';
 </script>
 
 <svelte:head>
@@ -14,10 +14,7 @@
 			<h1 class="text-3xl font-bold mt-10">Top Movies</h1>
 			<CarouselSlider cover_size={'large'}/>
 		
-			<h1 class="text-3xl font-bold mt-10">Your Favourites</h1>
-			<CarouselSlider cover_size={'small'}/>
-
-			<h1 class="text-3xl font-bold mt-10">Recommended</h1>
+			<h1 class="text-3xl font-bold mt-10">Watchlist</h1>
 			<CarouselSlider cover_size={'small'}/>
 
 		</div>
