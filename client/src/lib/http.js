@@ -12,11 +12,11 @@ function requestHandler(f, access_token) {
 		let server = route.split('/')[0];
 		let baseURL = '';
 		if (server == 'auth') {
-			baseURL = 'http://localhost:5000';
+			baseURL = 'http://localhost:5000/';
 		}
 
 		return (
-			await f(`${baseURL}/${route}`, {
+			await f(`${baseURL}${route}`, {
 				method: method || 'GET',
 				...(() => {
 					if (data) {

@@ -2,7 +2,9 @@ import * as cookie from 'cookie';
 import http from '$lib/http';
 
 export const handle = async ({ event, resolve }) => {
-	event.locals.access_token = cookie.parse(event.request.headers.cookie ?? '')['access_token'];
+	event.locals.access_token = cookie.parse(event.request.headers.get('cookie') || '')[
+		'access_token'
+	];
 
 	const response = await resolve(event);
 	return response;
@@ -12,6 +14,7 @@ export const handle = async ({ event, resolve }) => {
 export async function getSession(req) {
 	const context = req.locals;
 	let data;
+
 	// @ts-ignore
 	let authenticated = !!context.access_token ? true : false;
 

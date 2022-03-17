@@ -8,7 +8,7 @@
 	  } 
 	  return {};
 	};
-  </script>
+</script>
 
 <script>
 	import { getContext, onMount } from "svelte";
@@ -25,6 +25,7 @@
 		e.preventDefault();
 		let res = await auth.loginUser(form);
 
+		
 		if (res?.error) {
 			error = res.error;
 		}else {

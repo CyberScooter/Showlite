@@ -23,9 +23,11 @@
 	let error = ''
 
 	async function registerHandler() {
-		if(retypePassword != form.password){
-			let res = await auth.loginUser(form);
+		if(retypePassword == form.password){
 
+			let res = await auth.registerUser(form);
+
+			console.log(res);
 			if (res?.error) {
 				error = res.error;
 			}else {
@@ -51,7 +53,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
               Username
             </label>
-            <input bind:value={form.username} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Password">
+            <input bind:value={form.username} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Username">
           </div>
 		  <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
@@ -72,12 +74,12 @@
             <input bind:value={retypePassword} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
           </div>
           <div class="flex items-center justify-between">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            <button class="mb-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
               Register
             </button>
           </div>
+		  {error}
         </form>
-		{error}
         <p class="text-center text-gray-500 text-xs">
           &copy;2022 Showlite. All rights reserved.
         </p>

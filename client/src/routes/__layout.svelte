@@ -6,7 +6,7 @@
 
 <script>
 	import '../app.css';
-	import Navbar from '../components/navbar.svelte';
+	import Navbar from '../components/Navbar.svelte';
 	
 
 	import { session } from "$app/stores";
