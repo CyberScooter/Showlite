@@ -10,9 +10,9 @@ let app = express.Router();
 
 app.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     let userFound: any = await pool.maybeOne(
-      sql`select * from users where username=${username}`
+      sql`select * from users where email=${email}`
     );
 
     if (!userFound) return res.json({ error: "User does not exist" });
