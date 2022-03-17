@@ -1,6 +1,7 @@
 <!-- CSS AND FUNCTIONS FROM https://tailwinduikit.com/components/E-commerce/Components/carousels -->
 <script>
 	import MovieCard from '../components/movie_card.svelte';
+
 	export let cover_size;
 
 	let defaultTransform = 0;

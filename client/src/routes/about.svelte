@@ -1,0 +1,43 @@
+<svelte:head>
+	<title>Showlite: About</title>
+	<meta name="robots" content="noindex nofollow" />
+	<html lang="en" />
+</svelte:head>
+
+<div class="bg-gradient-to-r from-yellow-500 to-pink-500 h-auto">
+	<div
+		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 h-screen"
+	>
+		<div class="ml-20 mr-20">
+			<h1 class="text-3xl font-bold mt-10">About Us</h1>
+
+			<div class="relative flex py-5 items-center">
+				<div class="flex-grow border-t border-gray-400" />
+				<!-- <span class="flex-shrink mx-4 text-gray-400">Content</span> -->
+				<div class="flex-grow border-t border-gray-400" />
+			</div>
+
+			<p class="font-bold text-3xl mb-4">COM3014 GROUP 6</p>
+
+			<p class="text-xl mb-6">
+				<span>Showlite</span> is a fictious company that provides a full-stack website using microservices
+				architecture for an online database of movie related information. Users may rate and comment
+				on different movies in the database using the review system, where movie recommendations, popularity, and genres will be shown.
+			</p>
+
+            <p class="text-xl mb-6">Technologies being used in this project include Svelte (front-end), Node.js (back-end), Python (microservices), and PostgreSQL (database).</p>
+
+            <p class="text-xl mb-6">This project was made for COM3014 Coursework 2 and for movie lovers 💕.</p>
+
+			<p class="mb-4 text-2xl italic">This project was made possible by:</p>
+
+			<div class="ml-5 text-xl">
+				<ul class="list-disc">
+					<li>Andy Lee</li>
+					<li>Hrithik Udae Lacximicant</li>
+                    <li>..And lots of Coffee ☕</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
