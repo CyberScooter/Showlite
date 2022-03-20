@@ -40,7 +40,7 @@
 	<html lang="en" />
 </svelte:head>
 
-<div class="h-14 bg-gradient-to-r from-cyan-500 to-blue-500 h-screen">
+<div class="h-14 h-screen">
 	<div
 		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-90 h-screen"
 	>

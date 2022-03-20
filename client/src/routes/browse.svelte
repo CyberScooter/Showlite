@@ -1,6 +1,76 @@
 <script>
     import MovieInfo from '../components/MovieInfo.svelte';
-	import Pagination from '../components/Pagination.svelte';
+	import Pagination from '../components/pagination.svelte';
+
+	let rows = [{
+		title: "Test1",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		cover_url: '',
+		description: 'Test description'
+	},
+	{
+		title: "Test2",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		description: 'Test description'
+	},
+	{
+		title: "Test3",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		description: 'Test description'
+	},
+	{
+		title: "Test4",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		description: 'Test description'
+	},{
+		title: "Test5",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		description: 'Test description'
+	},
+	{
+		title: "Test6",
+		year: 2010,
+		rating: 3,	
+		genre: 'Action',
+		description: 'Test description'
+	}]
+
+	
+	let rowsCount = 0
+
+	let buttons = [-2,-1,0,1,2]
+	let count = 100
+	let pageSize = 6
+	let page = 0;
+
+	async function load(_page) {
+		// const data = await getData(_page, pageSize, text, sorting);
+		const data = [{id: "yes"}, {id: "no"}]
+		// rows = data.rows;
+		rows = data
+		// rowsCount = data.rowsCount
+		rowsCount = data.length;
+  	}
+
+	function onPageChange(event) {
+		console.log(event.detail.page);
+		load(event.detail.page);
+			page = event.detail.page;
+  	}
+
+	function filter(event) {
+
+	}
 </script>
 
 <svelte:head>
@@ -23,24 +93,20 @@
 			</div>
 
             <div class="mb-2">
-                <h1><span class="font-bold">Filter by: </span>Release Date | User Rating | Popularity | A-Z </h1>
+                <h1><span class="font-bold">Filter by: </span><a href="#" on:click={() => filter("Release Date")}>Release Date</a> | <a href="#" on:click={() => filter("User Rating")}>User Rating</a> | <a href="#" on:click={() => filter("popularity")}>Popularity</a> | <a href="#" on:click={() => filter("alphabet")}>A-Z</a> </h1>
             </div>
 
 			
 
             <div class="flex grid grid-rows-6">
-                <MovieInfo/>
-				<MovieInfo/>
-				<MovieInfo/>
-				<MovieInfo/>
-				<MovieInfo/>
-				<MovieInfo/>
-             
+				{#each rows as row}
+					<MovieInfo data={row}/>
+				{/each}
              
               
             </div>
 
-			<div class="mb-3"><Pagination  margin_top={'20'} /></div>
+			<!-- <div class="mb-3"><Pagination  margin_top={'20'} /></div> -->
 		</div>
 	</div>
 </div>

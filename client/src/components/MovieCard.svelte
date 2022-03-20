@@ -1,16 +1,10 @@
 <script>
+	import { onMount } from 'svelte';
 	export let cover_size;
 	import StarRating from 'svelte-star-rating';
 
-	const small_config = {
-		size: 18,
-		showText: true,
-	};
+	export let data;
 
-	const large_config = {
-		size: 30,
-		showText: true,
-	};
 </script>
 
 {#if cover_size === 'large'}
@@ -21,20 +15,21 @@
 			class="object-cover object-center w-96 h-full"
 		/>
 		<div class="bg-gray-800 bg-opacity-30 absolute w-96 h-full p-6">
-			<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
-				Movie #
-			</h2>
+			<!-- <h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
+				Movie {index+1}
+			</h2> -->
 
 			<div class="flex h-full items-end pb-6 flex-wrap pt-96">
 				<div class="w-full">
-					<StarRating rating={Number((Math.random() * 5).toFixed(2))} config={large_config} />
+					<StarRating rating={data.rating} config={{size: 18,
+						showText: true}} />
 				</div>
 
 				<div>
 					<h3
 						class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
 					>
-						Movie Title
+						{data.title}
 					</h3>
 				</div>
 			</div>
@@ -48,20 +43,21 @@
 			class="object-cover object-center w-48 h-full"
 		/>
 		<div class="bg-gray-800 bg-opacity-30 absolute w-48 h-full p-4">
-			<h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
+			<!-- <h2 class="lg:text-xl leading-4 text-base lg:leading-5 text-white dark:text-gray-900">
 				Movie #
-			</h2>
+			</h2> -->
 
 			<div class="flex h-full items-end pb-6 flex-wrap pt-36">
 				<div class="w-full">
-					<StarRating rating={Number((Math.random() * 5).toFixed(2))} config={small_config} />
+					<StarRating rating={data.rating} config={{size: 30,
+						showText: true}} />
 				</div>
 
 				<div>
 					<h3
 						class="text-xl lg:text-sm font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
 					>
-						Movie Title
+						{data.title}
 					</h3>
 				</div>
 			</div>

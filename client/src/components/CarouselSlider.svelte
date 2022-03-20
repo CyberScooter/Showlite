@@ -1,9 +1,40 @@
 <script>
 	import MovieCard from './MovieCard.svelte';
-	export let cover_size;
+	export let type;
 
 	let defaultTransform = 0;
 	let slider;
+
+	let topMovies = [{
+		title: "Test",
+		rating: 4,
+		cover_url: ''
+	},
+	{
+		title: "Test2",
+		rating: 4,
+		cover_url: ''
+	},
+	{
+		title: "Test3",
+		rating: 3,
+		cover_url: ''
+	},
+	{
+		title: "Test4",
+		rating: 2,
+		cover_url: ''
+	}]
+
+	let watchlist = [{
+		title: "Test5",
+		rating: 5,
+		cover_url: '',
+	},{
+		title: "Test6",
+		rating: 3,
+		cover_url: '',
+	}]
 
 	function goNext() {
 		defaultTransform = defaultTransform - 398;
@@ -16,6 +47,7 @@
 		else defaultTransform = defaultTransform + 398;
 		slider.style.transform = 'translateX(' + defaultTransform + 'px)';
 	}
+
 </script>
 
 <div class="flex items-center justify-center w-full h-full py-24 sm:py-8 px-4">
@@ -49,12 +81,16 @@
 				class="h-full flex lg:gap-8 md:gap-6 gap-14 items-center justify-start transition ease-out duration-700"
 				bind:this={slider}
 			>
-				<MovieCard {cover_size} />
-				<MovieCard {cover_size} />
-				<MovieCard {cover_size} />
-				<MovieCard {cover_size} />
-				<MovieCard {cover_size} />
-				<MovieCard {cover_size} />
+				{#if type == 'TopMovies'}
+					{#each topMovies as movie (movie.title)}
+						<MovieCard cover_size={'large'} data={movie}/>
+					{/each}
+					
+				{:else if type == 'Watchlist'}
+					{#each watchlist as movie (movie.title)}
+						<MovieCard cover_size={'small'} data={movie}/>
+					{/each}
+				{/if}
 				
 			</div>
 		</div>
