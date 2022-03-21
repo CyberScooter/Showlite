@@ -20,6 +20,8 @@ app.post("/login", async (req, res) => {
     const match = await compare(password, userFound.hash);
     delete userFound.hash;
 
+    console.log(process.env.JWT_TOKEN_SECRET);
+
     if (match) {
       return res.json({
         user: userFound,
@@ -30,7 +32,8 @@ app.post("/login", async (req, res) => {
     }
 
     return res.json({ error: "Password does not match" });
-  } catch (_) {
+  } catch (e) {
+    console.log(e);
     return res.json({ error: "Internal server error" });
   }
 });

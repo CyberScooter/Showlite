@@ -20,7 +20,7 @@
 
 	<div class="col-span-2 leading-10">
 		<h1 class="text-2xl font-bold">{data.title}</h1>
-		<h1>{data.year} | {data.genre}</h1>
+		<h1>{data.year} | {data.genre.length > 0 ? data.genre.join(', ') : data.genre[0]}</h1>
 		<StarRating rating={data.rating} config={small_config} />
 		<p
 			style="display: -webkit-box !important;

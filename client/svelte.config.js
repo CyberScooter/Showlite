@@ -1,6 +1,6 @@
 import pre from 'svelte-preprocess';
 import autoPrefixer from 'autoprefixer';
-import node from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-node';
 
 const preprocess = pre({
 	postcss: {
@@ -17,12 +17,12 @@ export default {
 		// By default, `npm run build` will create a standard Node app.
 		// You can create optimized builds for different platforms by
 		// specifying a different adapter
-		adapter: node({
+		adapter: adapter({
 			host: '0.0.0.0',
-			port: '8080',
+			port: '3000',
 			out: 'dist',
-			env: {
-				port: '8080'
+			envPrefix: {
+				port: '3000'
 			}
 		}),
 		vite: {

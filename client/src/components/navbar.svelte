@@ -1,6 +1,10 @@
 <script>
   import { goto } from '$app/navigation';
   import Cookie from 'js-cookie';
+  import { getContext } from "svelte";
+
+  const auth = getContext("store");
+  const getAuth = auth.state;
 
   async function logoutHandler(){
     if(!!Cookie.get("access_token")){
@@ -42,15 +46,20 @@
           <li>
             <p on:click={() => goto("/browse")} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Browse</p>
           </li>
-          <li>
-            <p on:click={() => goto("/watchlist")} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Watchlist</p>
-          </li>
-          <li>
-            <p on:click={() => goto("/auth/login")} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Login</p>
-          </li>
-          <li>
-            <p on:click={logoutHandler} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent ">Logout</p>
-          </li>
+          {#if $getAuth.authenticated}
+            <li>
+              <p on:click={() => goto("/watchlist")} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Watchlist</p>
+            </li>
+            <li>
+              <p on:click={logoutHandler} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent ">Logout</p>
+            </li>
+          {:else}
+            <li>
+              <p on:click={() => goto("/auth/login")} class="cursor-pointer block py-2 pr-4 pl-3 text-gray-100 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Login</p>
+            </li>
+          {/if}
+          
+
         </ul>
       </div>
     </div>

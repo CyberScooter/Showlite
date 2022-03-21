@@ -12,7 +12,7 @@ function requestHandler(f, access_token) {
 		let server = route.split('/')[0];
 		let baseURL = '';
 		if (server == 'auth') {
-			baseURL = 'http://localhost:5000/';
+			baseURL = 'http://auth-server:5000/';
 		}
 
 		return (

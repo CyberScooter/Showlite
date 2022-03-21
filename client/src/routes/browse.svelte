@@ -6,7 +6,7 @@
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		cover_url: '',
 		description: 'Test description'
 	},
@@ -14,39 +14,32 @@
 		title: "Test2",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},
 	{
 		title: "Test3",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},
 	{
 		title: "Test4",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},{
 		title: "Test5",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
-		description: 'Test description'
-	},
-	{
-		title: "Test6",
-		year: 2010,
-		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	}]
 
 	
-	let rowsCount = 0
+	// let rowsCount = 0
 
 	let buttons = [-2,-1,0,1,2]
 	let count = 100
@@ -96,9 +89,12 @@
                 <h1><span class="font-bold">Filter by: </span><a href="#" on:click={() => filter("Release Date")}>Release Date</a> | <a href="#" on:click={() => filter("User Rating")}>User Rating</a> | <a href="#" on:click={() => filter("popularity")}>Popularity</a> | <a href="#" on:click={() => filter("alphabet")}>A-Z</a> </h1>
             </div>
 
+			<div class="relative flex py-3 items-center">
+				<Pagination {buttons} {count} {pageSize} {page} on:pageChange={onPageChange}/>
+			</div>
 			
 
-            <div class="flex grid grid-rows-6">
+            <div class="flex grid grid-rows-5">
 				{#each rows as row}
 					<MovieInfo data={row}/>
 				{/each}

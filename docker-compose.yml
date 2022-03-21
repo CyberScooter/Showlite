@@ -11,18 +11,35 @@ services:
       # <Port exposed> : < MySQL Port running inside container>
       - "5435:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      # - ./postgres-data:/var/lib/postgresql/data
       # copy the sql script to create tables
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql:/docker-entrypoint-initdb.d
+  client:
+    container_name: frontend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    depends_on:
+      - postgresdb
+      - auth-server
+    ports:
+      - 3000:3000
+    volumes:
+      - /usr/src/client/node_modules
+      - ./client:/usr/src/client
   auth-server:
     container_name: auth_microservice
     build:
       context: ./services/auth
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       - postgresdb
     ports:
       - 5000:5000
+    environment:
+      JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
+      DATABASE_URL: postgres://root:123456@postgresdb:5432/showlite
     volumes:
       - /usr/src/app/node_modules
       - ./services/auth:/usr/src/app

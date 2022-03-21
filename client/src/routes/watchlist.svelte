@@ -1,3 +1,15 @@
+<script context="module">
+	export const load = async ({ session }) => {
+	  if (!session.authenticated) {
+		return {
+		  redirect: "/",
+		  status: 302,
+		};
+	  } 
+	  return {};
+	};
+</script>
+
 <script>
 	import MovieInfo from '../components/MovieInfo.svelte';
 	import Pagination from '../components/Pagination.svelte';
@@ -6,7 +18,7 @@
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		cover_url: '',
 		description: 'Test description'
 	},
@@ -14,48 +26,47 @@
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},
 	{
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action', 'Drama'],
 		description: 'Test description'
 	},
 	{
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},{
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	},
 	{
 		title: "Test1",
 		year: 2010,
 		rating: 3,	
-		genre: 'Action',
+		genre: ['Action'],
 		description: 'Test description'
 	}]
 
-	
 	let rowsCount = 0
 
 	let buttons = [-2,-1,0,1,2]
-	let count = 100
+	let count = 20
 	let pageSize = 6
 	let page = 0;
 
 	async function load(_page) {
 		// const data = await getData(_page, pageSize, text, sorting);
-		const data = [{id: "yes"}, {id: "no"}]
+		const data = [{title: "yes"}, {id: "no"}]
 		// rows = data.rows;
 		rows = data
 		// rowsCount = data.rowsCount
@@ -82,7 +93,7 @@
 	>
 
 		<div class="ml-20 mr-20">
-			<h1 class="text-3xl font-bold mt-10">Your Watchlist Movies</h1>
+			<h1 class="text-3x1 font-bold mt-10">Your Watchlist Movies</h1>
 
 			<div class="relative flex py-5 items-center">
 

@@ -1,3 +1,7 @@
+CREATE DATABASE showlite;
+
+\c showlite;
+
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
   "username" varchar UNIQUE,
