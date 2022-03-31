@@ -14,6 +14,9 @@
 	import MovieInfo from '../components/MovieInfo.svelte';
 	import Pagination from '../components/Pagination.svelte';
 
+	let pageSize = 5
+	let page = 0;
+
 	let rows = [{
 		title: "Test1",
 		year: 2010,
@@ -57,12 +60,7 @@
 		description: 'Test description'
 	}]
 
-	let rowsCount = 0
 
-	let buttons = [-2,-1,0,1,2]
-	let count = 20
-	let pageSize = 6
-	let page = 0;
 
 	async function load(_page) {
 		// const data = await getData(_page, pageSize, text, sorting);
@@ -70,7 +68,7 @@
 		// rows = data.rows;
 		rows = data
 		// rowsCount = data.rowsCount
-		rowsCount = data.length;
+		// rowsCount = data.length;
   	}
 
 	function onPageChange(event) {
@@ -103,7 +101,7 @@
 
 			</div>
 			<div class="relative flex py-3 items-center">
-				<Pagination {buttons} {count} {pageSize} {page} on:pageChange={onPageChange}/>
+				<Pagination {page} on:pageChange={onPageChange}/>
 			</div>
 
 			<div class="grid grid-cols-2">

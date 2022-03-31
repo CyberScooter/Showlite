@@ -33,7 +33,6 @@ app.post("/login", async (req, res) => {
 
     return res.json({ error: "Password does not match" });
   } catch (e) {
-    console.log(e);
     return res.json({ error: "Internal server error" });
   }
 });

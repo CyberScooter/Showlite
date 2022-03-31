@@ -43,3 +43,19 @@ services:
     volumes:
       - /usr/src/app/node_modules
       - ./services/auth:/usr/src/app
+  watchlist-server:
+    container_name: watchlist_microservice
+    build:
+      context: ./services/watchlist
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgresdb
+    ports:
+      - 5003:5003
+    environment:
+      JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
+      DATABASE_URL: postgres://root:123456@postgresdb:5432/showlite
+    volumes:
+      - /usr/src/app/node_modules
+      - ./services/watchlist:/usr/src/app

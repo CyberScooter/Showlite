@@ -1,5 +1,12 @@
 
     \c showlite;
+
+    insert into users(username, email, hash, created_at, updated_at) values ('TestAccount1', 'test1@example.com', '$2b$10$8mSZ7e4zHDwa.2tD98YlC.o.h6fV9HALm/8GIGiK.4R5Hb8l3gVuO', now(), now());
+    
+    insert into users(username, email, hash, created_at, updated_at) values ('TestAccount2', 'test2@example.com', '$2b$10$8mSZ7e4zHDwa.2tD98YlC.o.h6fV9HALm/8GIGiK.4R5Hb8l3gVuO', now(), now());
+
+    insert into users(username, email, hash, created_at, updated_at) values ('TestAccount3', 'test3@example.com', '$2b$10$8mSZ7e4zHDwa.2tD98YlC.o.h6fV9HALm/8GIGiK.4R5Hb8l3gVuO', now(), now());
+    
     
     WITH  movies_insert AS
     (

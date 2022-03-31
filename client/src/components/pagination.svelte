@@ -2,14 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  export let buttons;
-  export let count;
-  export let page = 0;
-  export let pageSize;
-
-
-  $: pageCount = Math.floor(count / pageSize);
-
+  export let page;
 
   export let labels = {
     first: "First",
@@ -65,26 +58,14 @@
       {labels.previous}
     </button>
   </li>
-  {#each buttons as button}
-    {#if page + button >= 0 && page + button <= pageCount}
-      <li>
-        <button
-          class:active={page === page + button}
-          on:click={e => onChange(e, page + button)}>
-          {page + button + 1}
-        </button>
-      </li>
-    {/if}
-  {/each}
   <li>
     <button
-      disabled={page > pageCount - 1}
       on:click={e => onChange(e, page + 1)}>
       {labels.next}
     </button>
   </li>
   <li>
-    <button disabled={page >= pageCount} on:click={e => onChange(e, pageCount)}>
+    <button  on:click={e => onChange(e, "end")}>
       {labels.last}
     </button>
   </li>

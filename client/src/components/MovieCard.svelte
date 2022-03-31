@@ -14,7 +14,7 @@
 			class="object-cover object-center w-96 h-full"
 		/>
 
-		<div class="bg-gray-800 bg-opacity-30 absolute w-96 h-full p-6">
+		<div class="absolute w-96 h-full p-6">
 			<div class="flex h-full items-end pb-6 flex-wrap pt-96">
 				<div class="w-full">
 					<StarRating rating={data.rating} config={{ size: 18, showText: true }} />
@@ -37,7 +37,7 @@
 			alt="Movie Cover"
 			class="object-cover object-center w-48 h-full shadow-lg"
 		/>
-		<div class="bg-gray-800 bg-opacity-30 absolute w-48 h-full p-4">
+		<div class="absolute w-48 h-full p-4">
 			<div class="flex h-full items-end pb-6 flex-wrap pt-36">
 				<div class="w-full">
 					<StarRating rating={data.rating} config={{ size: 30, showText: true }} />

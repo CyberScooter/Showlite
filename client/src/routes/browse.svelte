@@ -39,11 +39,6 @@
 	}]
 
 	
-	// let rowsCount = 0
-
-	let buttons = [-2,-1,0,1,2]
-	let count = 100
-	let pageSize = 6
 	let page = 0;
 
 	async function load(_page) {
@@ -52,7 +47,7 @@
 		// rows = data.rows;
 		rows = data
 		// rowsCount = data.rowsCount
-		rowsCount = data.length;
+		// rowsCount = data.length;
   	}
 
 	function onPageChange(event) {
@@ -90,7 +85,7 @@
             </div>
 
 			<div class="relative flex py-3 items-center">
-				<Pagination {buttons} {count} {pageSize} {page} on:pageChange={onPageChange}/>
+				<Pagination {page} on:pageChange={onPageChange}/>
 			</div>
 			
 

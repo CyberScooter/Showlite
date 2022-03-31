@@ -1,7 +1,85 @@
 <script>
 	import MovieCard from '../../components/MovieCard.svelte';
 	import CommentBox from '../../components/CommentBox.svelte';
+	import Pagination from '../../components/Pagination.svelte'
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { getContext } from "svelte";
 
+	const auth = getContext("store");
+	const getAuth = auth.state;
+
+	let form = {
+		title: '',
+		review: '',
+		rating: 0
+	}
+	let selectedRating = 0;
+	let rows = [{
+		title: "Review 1",
+		username: "Test1",
+		rating: 0,
+		comment: "akfpaodkfpadf",
+		created_at: Date.now()
+	},
+	{
+		title: "Review 2",
+		username: "Test2",
+		rating: 4,
+		comment: "akfpaodkfpadf",
+		created_at: Date.now()
+	},
+	{
+		title: "Review 3",
+		username: "Test3",
+		rating: 3,
+		comment: "akfpaodkfpadf",
+		created_at: Date.now()
+	}]
+	let pageSize = 5
+	let page = 0;
+
+	onMount(() => {
+		console.log("todo");
+		console.log(rows);
+	})
+
+	async function load(_page) {
+		// API call to data
+		const data = []
+		// rows = data.rows;
+		rows = data
+		// rowsCount = data.rowsCount
+		// count = data.length;
+  	}
+
+	function onPageChange(event) {
+		console.log(event.detail.page);
+		load(event.detail.page);
+			page = event.detail.page;
+  	}
+
+	function addComment(){
+
+		let el = {
+			title: form.title,
+			username: getAuth.user.username,
+			created_at: Date.now(),
+			rating: form.rating,
+			comment: form.comment
+		}	
+		if(rows.length == pageSize){
+			rows = [el]
+			page ++
+			history.pushState("#review-"+rows.length, '', "#review-"+rows.length)
+			return
+		}
+		rows = rows.concat(el)
+
+		history.pushState("#review-"+rows.length, '', "#review-"+rows.length)
+
+	}
+	
 	let movie = {
 		title: 'Test',
 		rating: 4,
@@ -41,7 +119,7 @@
 					<MovieCard cover_size={'large'} data={movie} />
 				</div>
 
-				<div class="col-span-1">
+				<div class="cursor-pointer col-span-1">
 					<img src="/watchlist-button.png" alt="Add to watchlist" class="flex-grow" />
 				</div>
 
@@ -77,7 +155,7 @@
 			</div>
 
 			<div class="flex">
-				<form action="" class="w-full p-4">
+				<form action="" class="w-full p-4" on:submit|preventDefault={() => addComment()}>
 					<div class="mb-5">
 						<label for="title" class="text-lg text-gray-600">Review Title</label>
 						<input
@@ -88,8 +166,8 @@
 					</div>
 					<div class="mb-5">
 						<label for="rating" class="text-lg text-gray-600">Rate this movie</label>
-						<select id="rating">
-							<option value="0">0</option>
+						<select bind:value={selectedRating} >
+							<option value="0" selected>0</option>
 							<option value="1">1</option>
 							<option value="2">2</option>
 							<option value="3">3</option>
@@ -123,14 +201,16 @@
 				<div class="flex-grow border-t border-gray-400" />
 			</div>
 
+			<div class="relative flex py-3 items-center">
+				<Pagination {page} on:pageChange={onPageChange}/>
+			</div>
+
 			<!-- Load User Reviews here -->
-
 			<div class="grid col-1">
-				<CommentBox />
-
-				<CommentBox />
-
-				<CommentBox />
+				{#each rows as row, index}
+					<CommentBox data={row} ind={index+1}/>
+				{/each}
+				
 			</div>
 		</div>
 	</div>
