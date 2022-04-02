@@ -5,7 +5,9 @@
 
 	const auth = getContext("store");
   	const getAuth = auth.state;
-	let error;
+	
+	$: getAuth
+	let canvasSetting = "h-screen";
 
 
 	let topMovies = [{
@@ -27,12 +29,18 @@
 		name: "Test4",
 		rating: 2,
 		cover_url: ''
+	},
+	{
+		name: "Test5",
+		rating: 2,
+		cover_url: ''
 	}]
 
 	let watchlist = []
 
 	onMount(async () => {
 		if($getAuth.authenticated){
+			canvasSetting = "h-max"
 			const data = await http(fetch)(`watchlist/getWatchlist?pageNum=1&limit=50`);
 
 			if(data.error){
@@ -50,8 +58,8 @@
 	<html lang="en" />
 </svelte:head>
 
-<div class="bg-gradient-to-r from-cyan-500 to-blue-500 {getAuth.authenticated ? 'h-max' : 'h-screen'}">
-	<div class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 {getAuth.authenticated ? 'h-max' : 'h-screen'}">
+<div class="bg-gradient-to-r from-cyan-500 to-blue-500 min-h-screen">
+	<div class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 rounded-b-lg">
 		<div class="ml-20 mr-20 pb-20">
 			<h1 class="text-3xl font-bold mt-10">Top Movies</h1>
 			<CarouselSlider {topMovies} type={'TopMovies'}/>

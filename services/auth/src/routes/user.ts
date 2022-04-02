@@ -20,8 +20,6 @@ app.post("/login", async (req, res) => {
     const match = await compare(password, userFound.hash);
     delete userFound.hash;
 
-    console.log(process.env.JWT_TOKEN_SECRET);
-
     if (match) {
       return res.json({
         user: userFound,

@@ -22,6 +22,7 @@ services:
     depends_on:
       - postgresdb
       - auth-server
+      - watchlist-server
     ports:
       - 3000:3000
     volumes:

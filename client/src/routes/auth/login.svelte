@@ -40,12 +40,14 @@
 	<html lang="en" />
 </svelte:head>
 
-<div class="h-14 h-screen">
+<div class="bg-gradient-to-r from-cyan-500 to-blue-500 min-h-screen">
 	<div
-		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-90 h-screen"
+		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-90 pb-5 rounded-b-lg"
 	>
 		<div class="ml-20 mr-20 mt-20">
-        <form on:submit|preventDefault={loginHandler} class="px-8 pt-6 pb-8 mb-4">
+
+        <form on:submit|preventDefault={loginHandler} >
+		  <h1 class="text-2xl font-bold mb-5"> Login to your account</h1>
 		  <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
               Email
@@ -58,10 +60,13 @@
             </label>
             <input bind:value={form.password} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
           </div>
-		  <div class="flex items-start mb-6">
+		  <div class="flex items-start">
 			<div class="text-sm text-blue-600">
 				<a href='#' on:click|preventDefault={() => {goto('/auth/register')}}>Don't have an account? Click here to register.</a>
 			</div>
+			</div>
+			<div class="my-4 text-red-600">
+				{error}
 			</div>
 			<button
 				type="submit"
@@ -69,7 +74,6 @@
 				>Login</button
 			>
         </form>
-		{error}
         <p class="text-center text-gray-500 text-xs">
           &copy;2022 Showlite. All rights reserved.
         </p>

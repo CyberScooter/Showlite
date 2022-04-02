@@ -67,9 +67,12 @@
   	}
 
 	async function addToWatchlist(){
+		console.log("ran");
 		const data = await http(fetch)("watchlist/addToWatchlist", "POST", {
 			movieID: $pageProperties.params.slug
 		});
+
+		console.log(data)
 
 		if(data.error){
 			return
@@ -139,8 +142,8 @@
 					<MovieCard cover_size={'large'} data={movie} />
 				</div>
 
-				<div class="cursor-pointer col-span-1">
-					<img src="/watchlist-button.png" alt="Add to watchlist" on:click={addToWatchlist} class="flex-grow" />
+				<div on:click={addToWatchlist} class="cursor-pointer col-span-1">
+					<img src="/watchlist-button.png" alt="Add to watchlist"  class="flex" />
 				</div>
 
 				<div class="col-span-8 text-xl">
