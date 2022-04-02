@@ -18,10 +18,8 @@ export default class AuthStore {
 	async loginUser(form) {
 		const data = await http(fetch)('auth/login', 'POST', form);
 
-		console.log(data);
-
 		if (!data.error) {
-			return this.setAuth(data);
+			return this.setAuth({... data, authenticated: true});
 		} else {
 			return { error: data.error };
 		}
@@ -31,19 +29,27 @@ export default class AuthStore {
 		const data = await http(fetch)('auth/register', 'POST', form);
 
 		if (!data.error) {
-			return this.setAuth(data);
+			return this.setAuth({... data, authenticated: true});
 		} else {
 			return { error: data.error };
 		}
 	}
 
-	async setAuth({ username, email, token }) {
+	async setAuth({ username, email, token, authenticated }) {
 		await this.state.update((value) => {
-			return { ...value, user: { username, email } };
+			return { ...value, user: { username, email }, authenticated };
 		});
 
 		Cookie.set('access_token', token, {
 			expires: new Date(new Date().setDate(new Date().getDate() + 7))
 		});
+	}
+
+	logout(){
+		if(!!Cookie.get("access_token")){
+			Cookie.remove('access_token')
+		}
+
+		return this.setAuth({username: '', email: '', token: '', authenticated: false})
 	}
 }

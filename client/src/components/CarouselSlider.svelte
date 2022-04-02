@@ -1,40 +1,12 @@
 <script>
+
 	import MovieCard from './MovieCard.svelte';
 	export let type;
+	export let watchlist;
+	export let topMovies;
 
 	let defaultTransform = 0;
 	let slider;
-
-	let topMovies = [{
-		title: "Test",
-		rating: 4,
-		cover_url: ''
-	},
-	{
-		title: "Test2",
-		rating: 4,
-		cover_url: ''
-	},
-	{
-		title: "Test3",
-		rating: 3,
-		cover_url: ''
-	},
-	{
-		title: "Test4",
-		rating: 2,
-		cover_url: ''
-	}]
-
-	let watchlist = [{
-		title: "Test5",
-		rating: 5,
-		cover_url: '',
-	},{
-		title: "Test6",
-		rating: 3,
-		cover_url: '',
-	}]
 
 	function goNext() {
 		defaultTransform = defaultTransform - 398;
@@ -82,12 +54,12 @@
 				bind:this={slider}
 			>
 				{#if type == 'TopMovies'}
-					{#each topMovies as movie (movie.title)}
+					{#each topMovies as movie (movie.name)}
 						<MovieCard cover_size={'large'} data={movie}/>
 					{/each}
 					
 				{:else if type == 'Watchlist'}
-					{#each watchlist as movie (movie.title)}
+					{#each watchlist as movie (movie.name)}
 						<MovieCard cover_size={'small'} data={movie}/>
 					{/each}
 				{/if}

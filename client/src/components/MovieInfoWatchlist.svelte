@@ -1,6 +1,8 @@
 <script>
 	import StarRating from 'svelte-star-rating';
 	import { createEventDispatcher } from "svelte";
+	import {goto} from '$app/navigation' 
+	const dispatch = createEventDispatcher()
 
 	export let data
 
@@ -17,11 +19,23 @@
 			alt="Movie Cover"
 			class="object-cover object-center w-48 h-238 mr-0"
 		/>
+
+		<button 
+			class="bg-red-500 hover:bg-red-500 text-white font-bold py-2 px-2 rounded mt-3"
+			on:click={() => 
+				dispatch("remove" , {
+					id: data.id
+				})
+			}
+		>
+			Remove
+		</button>
+		  
 		  
 	</div>
 
 	<div class="col-span-2 leading-10">
-		<h1 class="text-2xl font-bold">{data.name}</h1>
+		<h1 class="text-2xl font-bold cursor-pointer" on:click={() => goto(`/movie/${data.id}`)}>{data.name}</h1>
 		<h1>{data.year} | {data.genre.length > 0  ? data.genre.join(', ') : (data.genre[0] == "null" ? "" : data.genre[0])}</h1>
 		<StarRating rating={data.rating} config={small_config} />
 		<p

@@ -1,5 +1,47 @@
 <script>
 	import CarouselSlider from '../components/CarouselSlider.svelte';
+	import http from "$lib/http"
+	import { onMount, getContext } from 'svelte';
+
+	const auth = getContext("store");
+  	const getAuth = auth.state;
+	let error;
+
+
+	let topMovies = [{
+		name: "Test",
+		rating: 4,
+		cover_url: ''
+	},
+	{
+		name: "Test2",
+		rating: 4,
+		cover_url: ''
+	},
+	{
+		name: "Test3",
+		rating: 3,
+		cover_url: ''
+	},
+	{
+		name: "Test4",
+		rating: 2,
+		cover_url: ''
+	}]
+
+	let watchlist = []
+
+	onMount(async () => {
+		if($getAuth.authenticated){
+			const data = await http(fetch)(`watchlist/getWatchlist?pageNum=1&limit=50`);
+
+			if(data.error){
+				return
+			}
+			watchlist = data
+		}
+
+	})
 </script>
 
 <svelte:head>
@@ -8,14 +50,16 @@
 	<html lang="en" />
 </svelte:head>
 
-<div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-auto">
-	<div class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 h-auto">
+<div class="bg-gradient-to-r from-cyan-500 to-blue-500 {getAuth.authenticated ? 'h-max' : 'h-screen'}">
+	<div class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 {getAuth.authenticated ? 'h-max' : 'h-screen'}">
 		<div class="ml-20 mr-20 pb-20">
 			<h1 class="text-3xl font-bold mt-10">Top Movies</h1>
-			<CarouselSlider type={'TopMovies'}/>
-		
-			<h1 class="text-3xl font-bold mt-10">Watchlist</h1>
-			<CarouselSlider type={'Watchlist'}/>
+			<CarouselSlider {topMovies} type={'TopMovies'}/>
+
+			{#if $getAuth.authenticated}
+				<h1 class="text-3xl font-bold mt-10">Watchlist</h1>
+				<CarouselSlider {watchlist} type={'Watchlist'}/>
+			{/if}
 		</div>
 	</div>
 </div>

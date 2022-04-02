@@ -27,7 +27,6 @@
 
 			let res = await auth.registerUser(form);
 
-			console.log(res);
 			if (res?.error) {
 				error = res.error;
 			}else {

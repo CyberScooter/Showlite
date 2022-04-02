@@ -1,15 +1,14 @@
 <script>
   import { goto } from '$app/navigation';
   import Cookie from 'js-cookie';
-  import { getContext } from "svelte";
-
+  import { getContext, onMount } from "svelte";
   const auth = getContext("store");
   const getAuth = auth.state;
 
   async function logoutHandler(){
-    if(!!Cookie.get("access_token")){
-      Cookie.remove('access_token')
-    }
+		auth.logout();
+
+    goto("/")
   }
 </script>
 

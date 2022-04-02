@@ -13,7 +13,7 @@
 
 	setContext("store", new AuthStore(session));
 
-	console.log($session);
+	// console.log($session);
 </script>
 
 <Navbar />

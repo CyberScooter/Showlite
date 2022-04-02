@@ -51,7 +51,6 @@
   	}
 
 	function onPageChange(event) {
-		console.log(event.detail.page);
 		load(event.detail.page);
 			page = event.detail.page;
   	}

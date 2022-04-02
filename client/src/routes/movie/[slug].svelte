@@ -1,10 +1,12 @@
 <script>
 	import MovieCard from '../../components/MovieCard.svelte';
 	import CommentBox from '../../components/CommentBox.svelte';
-	import Pagination from '../../components/Pagination.svelte'
+	import Pagination from '../../components/pagination.svelte'
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { getContext } from "svelte";
+	import { page as pageProperties } from '$app/stores';
+	import http from '$lib/http'
 
 	const auth = getContext("store");
 	const getAuth = auth.state;
@@ -36,31 +38,48 @@
 		comment: "akfpaodkfpadf",
 		created_at: Date.now()
 	}]
-	let pageSize = 5
 	let page = 0;
+	let error;
 
 	onMount(() => {
-		console.log("todo");
-		console.log(rows);
+		console.log($pageProperties.params.slug);
 	})
 
-	async function load(_page) {
-		// API call to data
-		const data = []
-		// rows = data.rows;
-		rows = data
-		// rowsCount = data.rowsCount
-		// count = data.length;
+	async function load(p) {
+		const data = await http(fetch)(`watchlist/getWatchlist?pageNum=${p+1}&limit=6`);
+
+		if(data.error){
+			error = data.error
+			return
+		}
+
+		if(data.length == 0){
+			page = p - 1
+		}else{
+			rows = data
+		}
   	}
 
-	function onPageChange(event) {
-		console.log(event.detail.page);
-		load(event.detail.page);
-			page = event.detail.page;
+
+	function onPageChange({detail}) {
+		load(detail.page);
+			page = detail.page;
   	}
+
+	async function addToWatchlist(){
+		const data = await http(fetch)("watchlist/addToWatchlist", "POST", {
+			movieID: $pageProperties.params.slug
+		});
+
+		if(data.error){
+			return
+		}else {
+			goto("/watchlist")
+		}
+		
+	}
 
 	function addComment(){
-
 		let el = {
 			title: form.title,
 			username: getAuth.user.username,
@@ -68,9 +87,9 @@
 			rating: form.rating,
 			comment: form.comment
 		}	
-		if(rows.length == pageSize){
+		if(rows.length == 5){
 			rows = [el]
-			page ++
+			load(page+1)
 			history.pushState("#review-"+rows.length, '', "#review-"+rows.length)
 			return
 		}
@@ -97,6 +116,7 @@
 	<div
 		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 h-auto"
 	>
+	{#if !!!error}
 		<div class="ml-20 mr-20">
 			<h1 class="text-5xl mt-10 mb-5">Movie Title</h1>
 			<!-- (rating, name, description, cover_url, year, created_at, updated_at) -->
@@ -120,7 +140,7 @@
 				</div>
 
 				<div class="cursor-pointer col-span-1">
-					<img src="/watchlist-button.png" alt="Add to watchlist" class="flex-grow" />
+					<img src="/watchlist-button.png" alt="Add to watchlist" on:click={addToWatchlist} class="flex-grow" />
 				</div>
 
 				<div class="col-span-8 text-xl">
@@ -213,5 +233,8 @@
 				
 			</div>
 		</div>
+	{:else}
+		<h1>{error}</h1>
+	{/if}
 	</div>
 </div>
