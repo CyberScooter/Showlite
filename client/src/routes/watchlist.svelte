@@ -1,80 +1,71 @@
 <script context="module">
-	export const load = async ({ session }) => {
-	  if (!session.authenticated) {
-		return {
-		  redirect: "/",
-		  status: 302,
-		};
-	  } 
-	  return {};
+	export const load = async ({ session, fetch }) => {
+		if (!session.authenticated) {
+			return {
+				redirect: "/",
+				status: 302,
+			};
+		}
+		return {}
 	};
 </script>
 
 <script>
-	import MovieInfo from '../components/MovieInfo.svelte';
+	import { onMount } from 'svelte';
 	import Pagination from '../components/Pagination.svelte';
-
-	let pageSize = 5
+	import http from "$lib/http";
+	import MovieInfoWatchlist from '../components/MovieInfoWatchlist.svelte';
+	let serverError; 
 	let page = 0;
 
-	let rows = [{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		cover_url: '',
-		description: 'Test description'
-	},
-	{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},
-	{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action', 'Drama'],
-		description: 'Test description'
-	},
-	{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},
-	{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	}]
+	let rows = []
 
+	onMount(async ()=> {
+		const data = await http(fetch)(`watchlist/getWatchlist?pageNum=${page+1}&limit=6`);
+		if(data.error){
+			serverError = data.error
+			return
+		}
 
-
-	async function load(_page) {
-		// const data = await getData(_page, pageSize, text, sorting);
-		const data = [{title: "yes"}, {id: "no"}]
-		// rows = data.rows;
 		rows = data
-		// rowsCount = data.rowsCount
-		// rowsCount = data.length;
+	})
+
+	async function load(p) {
+		const data = await http(fetch)(`watchlist/getWatchlist?pageNum=${p+1}&limit=6`);
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
+		if(data.length == 0){
+			page = p - 1
+		}else{
+			rows = data
+		}
   	}
 
-	function onPageChange(event) {
-		console.log(event.detail.page);
-		load(event.detail.page);
-			page = event.detail.page;
+	async function removeFromWatchlist({detail}){
+		const data = await http(fetch)("watchlist/removeFromWatchlist", "POST", {
+			movieID: detail.id
+		});
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
+		rows = rows.filter(movie => movie.id != detail.id)
+
+		if(rows.length == 0 && page != 0){
+			page = page - 1
+			load(page)
+		}
+	}
+
+	function onPageChange({detail}) {
+		load(detail.page);
+			page = detail.page;
   	}
 
 </script>
@@ -100,15 +91,21 @@
 				<div class="flex-grow border-t border-gray-400" />
 
 			</div>
+			{#if !serverError}
 			<div class="relative flex py-3 items-center">
 				<Pagination {page} on:pageChange={onPageChange}/>
 			</div>
 
 			<div class="grid grid-cols-2">
 				{#each rows as row}
-					<MovieInfo data={row}/>
+					<MovieInfoWatchlist on:remove={removeFromWatchlist} data={row}/>
 				{/each}
+
 			</div>
+
+			{:else}
+				<h1  class="text-3x1 font-bold mb-10 auto">Internal server error</h1>
+			{/if}
 
 		</div>
 	</div>

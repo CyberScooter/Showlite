@@ -27,12 +27,13 @@
 
 			let res = await auth.registerUser(form);
 
-			console.log(res);
 			if (res?.error) {
 				error = res.error;
 			}else {
 				goto("/");
 			}
+		}else {
+			error = "Password doesn't match"
 		}
 	}
 </script>
@@ -43,12 +44,13 @@
 	<html lang="en" />
 </svelte:head>
 
-<div class="h-14 	h-screen">
+<div class="bg-gradient-to-r from-cyan-500 to-blue-500 min-h-screen">
 	<div
-		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-90 h-screen"
+		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-90 pb-5 rounded-b-lg"
 	>
 		<div class="ml-20 mr-20 mt-20">
-        <form on:submit|preventDefault={registerHandler} class="px-8 pt-6 pb-8 mb-4">
+        <form on:submit|preventDefault={registerHandler}>
+		  <h1 class="text-2xl font-bold mb-5"> Create a new account</h1>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
               Username
@@ -68,17 +70,20 @@
             <input bind:value={form.password} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
           </div>
 		  <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="retype-password">
+            <label class="block text-gray-700 text-sm font-bold" for="retype-password">
               Retype password
             </label>
-            <input bind:value={retypePassword} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
+            <input bind:value={retypePassword} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
           </div>
+		  <div class="my-4 text-red-600">
+			{error}
+		  </div>
           <div class="flex items-center justify-between">
             <button class="mb-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
               Register
             </button>
           </div>
-		  {error}
+
         </form>
         <p class="text-center text-gray-500 text-xs">
           &copy;2022 Showlite. All rights reserved.

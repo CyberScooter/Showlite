@@ -4,4 +4,8 @@ export interface CustomRequest extends Request {
   user?: {
     id: number;
   };
+  query?: {
+    pageNum?: number;
+    limit?: string;
+  }
 }

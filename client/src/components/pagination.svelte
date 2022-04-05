@@ -6,17 +6,13 @@
 
   export let labels = {
     first: "First",
-    last: "Last",
+    // last: "Last",
     next: "Next",
     previous: "Previous"
   };
 
-  function onChange(event, page) {
-    const detail = {
-      originalEvent: event,
-      page,
-    };
-    dispatch("pageChange", detail);
+  function onChange(page) {
+    dispatch("pageChange", {page});
 
   }
 </script>
@@ -49,24 +45,24 @@
 
 <ul>
   <li>
-    <button disabled={page === 0} on:click={e => onChange(e, 0)}>
+    <button disabled={page === 0} on:click={() => onChange(0)}>
       {labels.first}
     </button>
   </li>
   <li>
-    <button disabled={page === 0} on:click={e => onChange(e, page - 1)}>
+    <button disabled={page === 0} on:click={() => onChange(page - 1)}>
       {labels.previous}
     </button>
   </li>
   <li>
     <button
-      on:click={e => onChange(e, page + 1)}>
+      on:click={() => onChange(page + 1)}>
       {labels.next}
     </button>
   </li>
-  <li>
+  <!-- <li>
     <button  on:click={e => onChange(e, "end")}>
       {labels.last}
     </button>
-  </li>
+  </li> -->
 </ul>
