@@ -9,7 +9,8 @@ const pool = new Pool({
 
 
 const get_review = (request, response) => {
-  const pagenumber = parseInt(request.params.id)
+  
+  const pagenumber = request.body
   const rowsperpage = 10
 
     pool.query(
