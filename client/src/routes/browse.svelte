@@ -1,6 +1,6 @@
 <script>
     import MovieInfo from '../components/MovieInfo.svelte';
-	import Pagination from '../components/pagination.svelte';
+	import Pagination from '../components/Pagination.svelte';
 
 	let rows = [{
 		title: "Test1",

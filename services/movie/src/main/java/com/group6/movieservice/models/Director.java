@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,25 +15,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class Movie {
+public class Director {
     @Id
-    @GeneratedValue
-    private UUID id;
-    private String posterUrl;
-    private String title;
-    private String summary;
-    @Column(columnDefinition = "TEXT")
-    private String description;
-    private String trailerUrl;
-    private Date releaseDate;
-    private int views = 0;
-    private double rating = 0.0;
-    @OneToMany(mappedBy="movie")
-    @ToString.Exclude
-    private Set<Director> directors;
-    @OneToMany(mappedBy="movie")
-    @ToString.Exclude
-    private Set<MovieCast> movieCasts;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn
+    private Movie movie;
+    private String name;
     @Column(updatable=false)
     @CreationTimestamp
     private Date dateCreated;
@@ -45,8 +33,8 @@ public class Movie {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Movie movie = (Movie) o;
-        return id != null && Objects.equals(id, movie.id);
+        Director director = (Director) o;
+        return id != null && Objects.equals(id, director.id);
     }
 
     @Override

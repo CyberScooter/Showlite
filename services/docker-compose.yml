@@ -35,31 +35,31 @@ services:
     healthcheck:
        test: "exit 0"
 
-  reviewservice:
-    build: review-service/
-    image: group6/review-service
-    container_name: reviewservice
-    ports:
-      - "9002:9002"
-    depends_on:
-      reviewservicedb:
-        condition: service_healthy
-      serviceregistry:
-        condition: service_healthy
-    restart: on-failure    
+#   reviewservice:
+#     build: review-service/
+#     image: group6/review-service
+#     container_name: reviewservice
+#     ports:
+#       - "9002:9002"
+#     depends_on:
+#       reviewservicedb:
+#         condition: service_healthy
+#       serviceregistry:
+#         condition: service_healthy
+#     restart: on-failure    
 
-  reviewservicedb:
-    image: postgres
-    container_name: reviewservicedb
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=group6
-      - POSTGRES_DB=reviews
-    volumes:
-      - reviewservicedbdata:/var/lib/postgresql/data
-    healthcheck:
-       test: "exit 0"
+#   reviewservicedb:
+#     image: postgres
+#     container_name: reviewservicedb
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=group6
+#       - POSTGRES_DB=reviews
+#     volumes:
+#       - reviewservicedbdata:/var/lib/postgresql/data
+#     healthcheck:
+#        test: "exit 0"
 
-volumes:
-  movieservicedbdata:
-  reviewservicedbdata:
+# volumes:
+#   movieservicedbdata:
+#   reviewservicedbdata:

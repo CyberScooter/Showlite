@@ -17,8 +17,8 @@ import java.util.UUID;
 @ToString
 public class MovieCast {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne
     @JoinColumn
     private Movie movie;

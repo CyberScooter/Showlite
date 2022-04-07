@@ -21,7 +21,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @PostMapping(value="{movieId}/upload-poster", consumes = "multipart/form-data")
-    public ResponseEntity<ResponseMessageDTO> uploadPoster(@PathVariable(value="movieId") UUID movieId, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<ResponseMessageDTO> uploadPoster(@PathVariable(value="movieId") Long movieId, @RequestPart("file") MultipartFile file) {
         return ResponseEntity.ok(movieService.uploadPoster(movieId, file));
     }
 
@@ -31,7 +31,7 @@ public class MovieController {
     }
 
     @PutMapping("{movieId}")
-    public ResponseEntity<MovieResponseDTO> updateMovie(@PathVariable(value="movieId") UUID movieId, @RequestBody MovieRequestDTO request) {
+    public ResponseEntity<MovieResponseDTO> updateMovie(@PathVariable(value="movieId") Long movieId, @RequestBody MovieRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(movieService.updateMovie(movieId, request));
     }
 
@@ -44,17 +44,17 @@ public class MovieController {
 
 
     @GetMapping("{movieId}")
-    public ResponseEntity<MovieResponseDTO> getSingleMovie(@PathVariable(value="movieId") UUID movieId) {
+    public ResponseEntity<MovieResponseDTO> getSingleMovie(@PathVariable(value="movieId") Long movieId) {
         return ResponseEntity.ok(movieService.getSingleMovie(movieId));
     }
 
     @DeleteMapping("{movieId}")
-    public ResponseEntity<ResponseMessageDTO> deleteMovie(@PathVariable(value="movieId") UUID movieId) {
+    public ResponseEntity<ResponseMessageDTO> deleteMovie(@PathVariable(value="movieId") Long movieId) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(movieService.deleteMovie(movieId));
     }
 
     @PatchMapping("{movieId}/rate")
-    public ResponseEntity<ResponseMessageDTO> updateRating(@PathVariable(value="movieId") UUID movieId,
+    public ResponseEntity<ResponseMessageDTO> updateRating(@PathVariable(value="movieId") Long movieId,
                                                            @RequestBody UpdateRatingDTO request) {
         return ResponseEntity.ok(movieService.updateRating(movieId, request));
     }

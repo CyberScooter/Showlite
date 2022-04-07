@@ -1,7 +1,7 @@
 <script>
 	import MovieCard from '../../components/MovieCard.svelte';
 	import CommentBox from '../../components/CommentBox.svelte';
-	import Pagination from '../../components/pagination.svelte'
+	import Pagination from '../../components/Pagination.svelte'
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { getContext } from "svelte";
@@ -18,6 +18,7 @@
 	}
 	let selectedRating = 0;
 	let rows = [{
+		id: 1,
 		title: "Review 1",
 		username: "Test1",
 		rating: 0,
@@ -25,6 +26,7 @@
 		created_at: Date.now()
 	},
 	{
+		id: 2,
 		title: "Review 2",
 		username: "Test2",
 		rating: 4,
@@ -32,6 +34,7 @@
 		created_at: Date.now()
 	},
 	{
+		id: 3,
 		title: "Review 3",
 		username: "Test3",
 		rating: 3,
@@ -40,6 +43,7 @@
 	}]
 	let page = 0;
 	let error;
+	let serverError;
 
 	onMount(() => {
 		console.log($pageProperties.params.slug);
@@ -82,7 +86,7 @@
 		
 	}
 
-	function addComment(){
+	async function addComment(){
 		let el = {
 			title: form.title,
 			username: getAuth.user.username,
@@ -90,6 +94,18 @@
 			rating: form.rating,
 			comment: form.comment
 		}	
+
+		const data = await http(fetch)("reviews/deleteReview", "POST", {
+			movieID: $pageProperties.params.slug
+		});
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
+		el.id = data.id
+
 		if(rows.length == 5){
 			rows = [el]
 			load(page+1)
@@ -98,8 +114,27 @@
 		}
 		rows = rows.concat(el)
 
+	
 		history.pushState("#review-"+rows.length, '', "#review-"+rows.length)
 
+	}
+
+	async function removeComment(id){
+		const data = await http(fetch)("reviews/deleteReview", "POST", {
+			movieID: $pageProperties.params.slug
+		});
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
+		rows = rows.filter(comment => comment.id != id)
+
+		if(rows.length == 0 && page != 0){
+			page = page - 1
+			load(page)
+		}
 	}
 	
 	let movie = {

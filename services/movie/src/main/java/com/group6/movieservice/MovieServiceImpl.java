@@ -30,7 +30,7 @@ public class MovieServiceImpl implements MovieService {
 
 
     @Override
-    public ResponseMessageDTO uploadPoster(UUID movieId, MultipartFile file) {
+    public ResponseMessageDTO uploadPoster(Long movieId, MultipartFile file) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");
@@ -53,7 +53,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponseDTO updateMovie(UUID movieId, MovieRequestDTO request) {
+    public MovieResponseDTO updateMovie(Long movieId, MovieRequestDTO request) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");
@@ -63,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponseDTO getSingleMovie(UUID movieId) {
+    public MovieResponseDTO getSingleMovie(Long movieId) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");
@@ -71,7 +71,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public ResponseMessageDTO deleteMovie(UUID movieId) {
+    public ResponseMessageDTO deleteMovie(Long movieId) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");
@@ -80,7 +80,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public ResponseMessageDTO updateRating(UUID movieId, UpdateRatingDTO request) {
+    public ResponseMessageDTO updateRating(Long movieId, UpdateRatingDTO request) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");

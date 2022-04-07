@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface MovieService {
-    ResponseMessageDTO uploadPoster(UUID movieId, MultipartFile file);
+    ResponseMessageDTO uploadPoster(Long movieId, MultipartFile file);
     MovieResponseDTO createMovie(MovieRequestDTO request);
     Page<MovieResponseDTO> searchMovies(int page, int size, String query);
-    MovieResponseDTO updateMovie(UUID movieId, MovieRequestDTO request);
-    MovieResponseDTO getSingleMovie(UUID movieId);
-    ResponseMessageDTO deleteMovie(UUID movieId);
-    ResponseMessageDTO updateRating(UUID movieId, UpdateRatingDTO request);
+    MovieResponseDTO updateMovie(Long movieId, MovieRequestDTO request);
+    MovieResponseDTO getSingleMovie(Long movieId);
+    ResponseMessageDTO deleteMovie(Long movieId);
+    ResponseMessageDTO updateRating(Long movieId, UpdateRatingDTO request);
     Page<MovieResponseDTO> getAllMovies(int page, int size);
     List<MovieResponseDTO> getPopularMovies();
     List<MovieResponseDTO> topRatedMovies();
