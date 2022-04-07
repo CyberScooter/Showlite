@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-const db = require('C:/Users/anuja/OneDrive/Surrey/Semester 2/AWT/grp_cw_review_service/Showlite/services/Reviews/src/queries.js')
+const db = require('C:/Users/anuja/OneDrive/Surrey/Semester 2/AWT/Showlite_Review_Service/Showlite/services/review_rating_service/src/queries.js')
 
 app.use(bodyParser.json())
 app.use(
