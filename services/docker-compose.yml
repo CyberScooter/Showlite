@@ -11,14 +11,12 @@ services:
       test: "exit 0"
 
   movieservice:
-    build: movie-service/
+    build: movie/
     image: group6/movie-service
     container_name: movieservice
     ports:
       - "9001:9001"
     depends_on:
-      movieservicedb:
-        condition: service_healthy  
       serviceregistry:
         condition: service_healthy
     restart: on-failure
@@ -30,8 +28,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=group6
       - POSTGRES_DB=movies
+    ports:
+      - "5436:5432"
     volumes:
-      - movieservicedbdata:/var/lib/postgresql/data
+      - /var/lib/postgresql/data
     healthcheck:
        test: "exit 0"
 

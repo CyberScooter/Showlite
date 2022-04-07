@@ -6,6 +6,7 @@ import * as jwt from "jsonwebtoken";
 import axios from "axios"
 import UserOperations from './routes/user'
 import WatchlistOperations from './routes/watchlist'
+import MoviesOperations from './routes/movies'
 config();
 
 const app = express()
@@ -19,6 +20,7 @@ app.use(
 
 app.use('/user', UserOperations)
 app.use('/watchlist', WatchlistOperations)
+app.use("/movies", MoviesOperations)
 
 
 app.listen(PORT);
