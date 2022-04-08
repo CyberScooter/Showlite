@@ -42,27 +42,29 @@
     cursor: pointer;
   }
 </style>
-
-<ul>
-  <li>
-    <button disabled={page === 0} on:click={() => onChange(0)}>
-      {labels.first}
-    </button>
-  </li>
-  <li>
-    <button disabled={page === 0} on:click={() => onChange(page - 1)}>
-      {labels.previous}
-    </button>
-  </li>
-  <li>
-    <button
-      on:click={() => onChange(page + 1)}>
-      {labels.next}
-    </button>
-  </li>
-  <!-- <li>
-    <button  on:click={e => onChange(e, "end")}>
-      {labels.last}
-    </button>
-  </li> -->
-</ul>
+<div>
+  <p class="ml-2 mb-3 font-bold">Page {page+1}</p>
+  <ul>
+    <li>
+      <button disabled={page === 0} on:click={() => onChange(0)}>
+        {labels.first}
+      </button>
+    </li>
+    <li>
+      <button disabled={page === 0} on:click={() => onChange(page - 1)}>
+        {labels.previous}
+      </button>
+    </li>
+    <li>
+      <button
+        on:click={() => onChange(page + 1)}>
+        {labels.next}
+      </button>
+    </li>
+    <!-- <li>
+      <button  on:click={e => onChange(e, "end")}>
+        {labels.last}
+      </button>
+    </li> -->
+  </ul>
+</div>

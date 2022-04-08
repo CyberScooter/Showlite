@@ -10,43 +10,26 @@
 	let canvasSetting = "h-screen";
 
 
-	let topMovies = [{
-		name: "Test",
-		rating: 4,
-		cover_url: ''
-	},
-	{
-		name: "Test2",
-		rating: 4,
-		cover_url: ''
-	},
-	{
-		name: "Test3",
-		rating: 3,
-		cover_url: ''
-	},
-	{
-		name: "Test4",
-		rating: 2,
-		cover_url: ''
-	},
-	{
-		name: "Test5",
-		rating: 2,
-		cover_url: ''
-	}]
+	let topMovies = []
 
 	let watchlist = []
 
 	onMount(async () => {
+		const data = await http(fetch)(`movies/top-rated`);
+
+		if(data.error){
+			return
+		}
+		topMovies = data
+		
 		if($getAuth.authenticated){
 			canvasSetting = "h-max"
-			const data = await http(fetch)(`watchlist/getWatchlist?pageNum=1&limit=50`);
+			const data = await http(fetch)(`watchlist/get?pageNum=1&limit=50`);
 
 			if(data.error){
 				return
 			}
-			watchlist = data
+			watchlist = data.movies
 		}
 
 	})

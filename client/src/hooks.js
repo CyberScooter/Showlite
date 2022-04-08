@@ -19,7 +19,7 @@ export async function getSession(req) {
 	let authenticated = !!context.access_token ? true : false;
 
 	// @ts-ignore
-	if (!!context.access_token) data = await http(fetch, context.access_token)('auth/data');
+	if (!!context.access_token) data = await http(fetch, context.access_token)('user/data');
 
 	let initSession = {
 		user: !!data ? data : {},

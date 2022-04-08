@@ -5,9 +5,13 @@
 	import {goto} from '$app/navigation' 
 
 	export let data;
+	export let onMoviePage;
+
+
 </script>
 
 {#if cover_size === 'large'}
+<div class="block">
 <div>
 	<div 
 		class="cursor-pointer flex flex-shrink-0 relative w-full sm:w-auto"
@@ -15,64 +19,45 @@
 	>
 		<div on:click={goto(`/movie/${data.id}`)}>
 			<img
-				src="https://image.tmdb.org/t/p/w185/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg"
+				src="https://image.tmdb.org/t/p/w185{data.posterUrl}"
 				alt="/film-poster-placeholder.png"
-				class="object-cover object-center w-96 h-full"
+				class="object-cover object-center w-96 min-w-full min-h-full h-full shadow-lg align-top max-h-xs max-w-xs"
 			/>
 		</div>
 
-
-		<!-- <div class="absolute w-96 h-full p-6">
-			<div class="flex h-full items-end pb-6 flex-wrap pt-96">
-
-				<div>
-
-				</div>
-			</div>
-		</div> -->
 	</div>
 	<h3
-		class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900 my-2"
+		class="block text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900 my-2"
 	>	
-		{data.name}
+		{data.title}
 	</h3>
-	<div class="w-full">
-		<StarRating rating={data.rating} config={{ size: 18 }} />
+	<div>
+		{#if !onMoviePage}
+			<StarRating rating={data.rating} config={{ size: 18}} />
+		{/if}
 	</div>
 </div>
+</div>
 {:else if cover_size === 'small'}
-<div class="block">
+<div class="block w-48 h-120">
 	<div 
 		class="absolute cursor-pointer flex flex-shrink-0 relative w-full sm:w-auto"
 		on:click={goto(`/movie/${data.id}`)}
 	>
 		<img
-			src="https://image.tmdb.org/t/p/w185{data.cover_url}"
+			src="https://image.tmdb.org/t/p/w185{data.posterUrl}"
 			alt="/film-poster-placeholder.png"
-			class="object-cover object-center w-48 h-full shadow-lg"
+			class="object-cover object-center w-120 h-120 h-full shadow-lg"
 		/>
 
-
-		<!-- <div class="w-48 h-full p-4">
-			<div class="flex h-full items-end pb-6 flex-wrap pt-36">
-
-				<div>
-					<h3
-						class="text-xl lg:text-sm font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900"
-					>
-					</h3>
-				</div>
-			</div>
-
-		</div> -->
-
-
 	</div>
-	<div class="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900 my-3">
-		{data.name}
+	<div class="break-words text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white dark:text-gray-900 my-3">
+		{data.title}
 	</div>
 	<div >
+		{#if !onMoviePage}
 		<StarRating rating={data.rating} config={{ size: 18}} />
+		{/if}
 	</div>
 </div>
 

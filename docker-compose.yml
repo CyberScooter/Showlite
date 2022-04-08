@@ -1,43 +1,5 @@
 version: "3"
 services:
-  postgresdb:
-    container_name: postgres_db
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 123456
-    ports:
-      # <Port exposed> : < MySQL Port running inside container>
-      - "5435:5432"
-    volumes:
-      # - ./postgres-data:/var/lib/postgresql/data
-      # copy the sql script to create tables
-      - ./sql:/docker-entrypoint-initdb.d
-
-  movieservicedb:
-    image: postgres
-    container_name: movieservicedb
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=group6
-      - POSTGRES_DB=movies
-    ports:
-      - "5436:5432"
-    volumes:
-      - movieservicedbdata:/var/lib/postgresql/data
-    healthcheck:
-       test: "exit 0"
-
-  serviceregistry:
-    build: ./services/service-registry/
-    image: group6/service-registry
-    container_name: serviceregistry
-    ports:
-      - "8761:8761"
-    healthcheck:
-      test: "exit 0"
-  
   client:
     container_name: frontend
     build:
@@ -52,38 +14,61 @@ services:
     volumes:
       - /usr/src/client/node_modules
       - ./client:/usr/src/client
-  auth-server:
-    container_name: auth_microservice
+
+  api-gateway:
+    container_name: api-gateway
     build:
-      context: ./services/auth
+      context: ./services/api-gateway
       dockerfile: Dockerfile
     restart: always
     depends_on:
       - postgresdb
     ports:
-      - 5000:5000
+      - 5010:5010
     environment:
+      NODE_ENV: production
       JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
       DATABASE_URL: postgres://root:123456@postgresdb:5432/showlite
     volumes:
       - /usr/src/app/node_modules
-      - ./services/auth:/usr/src/app
-  watchlist-server:
-    container_name: watchlist_microservice
+      - ./services/api-gateway:/usr/src/app
+      
+  userservice:
+    container_name: userservice
+    build:
+      context: ./services/user
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - userservicedb
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
+      DATABASE_URL: postgres://root:123456@userservicedb:5432/users
+    volumes:
+      - /usr/src/app/node_modules
+      - ./services/user:/usr/src/app
+
+  watchlistservice:
+    container_name: watchlistservice
     build:
       context: ./services/watchlist
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      - postgresdb
+      - watchlistservicedb
     ports:
-      - 5003:5003
+      - "5001:5001"
     environment:
+      NODE_ENV: production
       JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
-      DATABASE_URL: postgres://root:123456@postgresdb:5432/showlite
+      DATABASE_URL: postgres://root:123456@watchlistservicedb:5432/watchlists
     volumes:
       - /usr/src/app/node_modules
       - ./services/watchlist:/usr/src/app
+      
   movieservice:
     build: ./services/movie-service/
     image: group6/movie-service
@@ -96,4 +81,87 @@ services:
       serviceregistry:
         condition: service_healthy
     restart: on-failure
+
+  reviewservice:
+    build: ./services/review_rating_service/
+    image: group6/review-service
+    container_name: reviewservice
+    ports:
+      - "5002:5002"
+    depends_on:
+      - reviewservicedb
+    environment:
+      JWT_TOKEN_SECRET: ioajdfoiajfaoidjfo
+      DATABASE_URL: postgres://root:123456@reviewservicedb:5432/reviews
+    volumes:
+      - /usr/src/app/node_modules
+      - ./services/watchlist:/usr/src/app
+
+  userservicedb:
+    container_name: postgres_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "5434:5432"
+    volumes:
+      # - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./sql:/docker-entrypoint-initdb.d
+
+  movieservicedb:
+    image: postgres
+    container_name: movieservicedb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=group6
+      - POSTGRES_DB=movies
+    ports:
+      - "5435:5432"
+    volumes:
+      - movieservicedbdata:/var/lib/postgresql/data
+    healthcheck:
+       test: "exit 0"
+
+  reviewservicedb:
+    container_name: postgres_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "5436:5432"
+    volumes:
+      # - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./sql:/docker-entrypoint-initdb.d
+    
+  watchlistservicedb:
+    container_name: postgres_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "5437:5432"
+    volumes:
+      # - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./sql:/docker-entrypoint-initdb.d
+
+  serviceregistry:
+    build: ./services/service-registry/
+    image: group6/service-registry
+    container_name: serviceregistry
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: "exit 0"
 

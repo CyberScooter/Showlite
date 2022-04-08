@@ -1,8 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const port = 3000
-const db = require('C:/Users/anuja/OneDrive/Surrey/Semester 2/AWT/Showlite_Review_Service/Showlite/services/review_rating_service/src/queries.js')
+const port = 5002
+const db = require('./queries.js')
 
 app.use(bodyParser.json())
 app.use(
@@ -16,8 +16,9 @@ app.get('/', (request, response) => {
   })
 
 app.get('/getreviews', db.get_review)
+app.get('/countreview', db.count_review)
+app.get('/checkreview', db.check_review)
 app.post('/addreview', db.insert_review)
-app.post('/updatereview', db.update_review)
 app.post('/deletereview', db.delete_review)
 
 app.listen(port, () => {

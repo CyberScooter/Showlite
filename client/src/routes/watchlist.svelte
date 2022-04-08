@@ -21,17 +21,18 @@
 	let rows = []
 
 	onMount(async ()=> {
-		const data = await http(fetch)(`watchlist/getWatchlist?pageNum=${page+1}&limit=6`);
+		const data = await http(fetch)(`watchlist/get?pageNum=${page+1}&limit=6`);
+		console.log(data);
 		if(data.error){
 			serverError = data.error
 			return
 		}
 
-		rows = data
+		rows = data.movies
 	})
 
 	async function load(p) {
-		const data = await http(fetch)(`watchlist/getWatchlist?pageNum=${p+1}&limit=6`);
+		const data = await http(fetch)(`watchlist/get?pageNum=${p+1}&limit=6`);
 
 		if(data.error){
 			serverError = data.error
@@ -41,12 +42,12 @@
 		if(data.length == 0){
 			page = p - 1
 		}else{
-			rows = data
+			rows = data.movies
 		}
   	}
 
 	async function removeFromWatchlist({detail}){
-		const data = await http(fetch)("watchlist/removeFromWatchlist", "POST", {
+		const data = await http(fetch)("watchlist/delete", "POST", {
 			movieID: detail.id
 		});
 

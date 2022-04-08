@@ -84,7 +84,7 @@ public class MovieServiceImpl implements MovieService {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty())
             throw new MovieNotFoundException("Movie not found");
-        movie.get().setRating((movie.get().getRating() + request.getRating()) / 2);
+        movie.get().setRating(request.getRating());
         movieRepository.save(movie.get());
         return new ResponseMessageDTO("Rating saved successfully");
     }

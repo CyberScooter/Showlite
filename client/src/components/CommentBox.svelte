@@ -1,7 +1,10 @@
 <script>
     import StarRating from 'svelte-star-rating';
+    import { createEventDispatcher } from "svelte";
     export let data;
     export let ind;
+    export let showDelete;
+    const dispatch = createEventDispatcher()
 
 </script>
 
@@ -20,4 +23,18 @@
     <p id="review-{ind}"class="text-xl mb-4 text-gray-600">
         {data.comment}
     </p>
+
+    {#if showDelete}
+        <button 
+            class="bg-red-500 hover:bg-red-500 text-white font-bold py-2 px-2 rounded mt-3"
+            on:click={() => 
+                dispatch("remove" , {
+                    id: data.id
+                })
+            }
+        >
+        Remove
+        </button>
+    {/if}
+
 </div>

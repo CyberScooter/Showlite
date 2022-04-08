@@ -78,6 +78,7 @@ app.get("/data", async (req, res) => {
 
     return res.json(userFound);
   } catch (e) {
+    console.log(e);
     return res.json({ error: "Internal server error" });
   }
 });

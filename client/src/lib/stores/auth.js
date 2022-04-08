@@ -16,7 +16,9 @@ export default class AuthStore {
 	logoutUser() {}
 
 	async loginUser(form) {
-		const data = await http(fetch)('auth/login', 'POST', form);
+		const data = await http(fetch)('user/login', 'POST', form);
+
+		console.log(data);
 
 		if (!data.error) {
 			return this.setAuth({... data, authenticated: true});
@@ -26,7 +28,7 @@ export default class AuthStore {
 	}
 
 	async registerUser(form) {
-		const data = await http(fetch)('auth/register', 'POST', form);
+		const data = await http(fetch)('user/register', 'POST', form);
 
 		if (!data.error) {
 			return this.setAuth({... data, authenticated: true});

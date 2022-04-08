@@ -8,6 +8,7 @@ let app = express.Router()
 
 app.post('/login', async (req, res) => {
   const {email, password} = req.body
+  console.log(req.body);
   try{
     const {data} = await axios.post(
       `${userURL}user/login`,

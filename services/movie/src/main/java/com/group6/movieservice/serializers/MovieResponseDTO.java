@@ -11,6 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class MovieResponseDTO {
+    private Long id;
     private String title;
     private String summary;
     private String description;

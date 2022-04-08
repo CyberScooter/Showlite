@@ -50,16 +50,16 @@
 		<div class="w-full h-full mx-auto overflow-x-hidden overflow-y-hidden">
 			<div
 				id="slider"
-				class="h-full flex lg:gap-8 md:gap-6 gap-14 items-center justify-start transition ease-out duration-700"
+				class="h-full flex gap-14 items-center transition ease-out duration-700"
 				bind:this={slider}
 			>
 				{#if type == 'TopMovies'}
-					{#each topMovies as movie (movie.name)}
+					{#each topMovies as movie}
 						<MovieCard cover_size={'large'} data={movie}/>
 					{/each}
 					
 				{:else if type == 'Watchlist'}
-					{#each watchlist as movie (movie.name)}
+					{#each watchlist as movie}
 						<MovieCard cover_size={'small'} data={movie}/>
 					{/each}
 				{/if}

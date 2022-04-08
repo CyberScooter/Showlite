@@ -10,20 +10,12 @@ function requestHandler(f, access_token) {
 	}
 	return async function (route, method, data) {
 		let server = route.split('/')[0];
-		let baseURL = '';
-		if (server == 'auth') {
-			baseURL= 'http://localhost:5000/'
+		let baseURL = 'http://localhost:5010/';
+		if (server == 'user') {
 			if(route.split("/")[1] == "data"){
-				baseURL= 'http://localhost:5000/'
+				baseURL= 'http://localhost:5010/'
 				// baseURL = 'http://auth-server:5000/'
 			}
-		}else if (server == "watchlist"){
-			// baseURL = 'http://watchlist-server:5003/'
-			baseURL = 'http://localhost:5003/'
-		} else if(server == "reviews"){
-			baseURL = 'http://reviews-server:5002/'
-		} else {
-			baseURL = 'http://movies-server:5001/'
 		}
 
 

@@ -6,7 +6,7 @@ import * as express from "express";
 import WatchlistOperations from "./routes/watchlist";
 
 const app = express();
-const PORT = 5003;
+const PORT = 5001;
 app.use(cors({ origin: "*" }));
 
 app.use(

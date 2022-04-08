@@ -7,22 +7,21 @@ import { CustomRequest } from "./dto/user.dto";
 let app = express.Router();
 
 app.post(
-  "/addToWatchlist",
-  authenticateToken,
+  "/add",
   async (req: CustomRequest, res) => {
     try {
-      const { movieID } = req.body;
+      const { movieID, id } = req.body;
 
       let found = await pool.maybeOne(
         sql`
-          select * from watchlist where movie_id=${movieID} and user_id=${req.user.id}
+          select * from watchlist where movie_id=${movieID} and user_id=${id}
         `
       )
 
       if(found) return res.json({error: "Already in watchlist"})
 
       await pool.query(
-        sql`insert into watchlist(user_id, movie_id, created_at, updated_at) VALUES (${req.user.id},${movieID},now(),now())`
+        sql`insert into watchlist(user_id, movie_id, created_at, updated_at) VALUES (${id},${movieID},now(),now())`
       );
 
       res.json({ success: true });
@@ -33,13 +32,12 @@ app.post(
 );
 
 app.post(
-  "/removeFromWatchlist",
-  authenticateToken,
+  "/delete",
   async (req: CustomRequest, res) => {
     try {
-      const { movieID } = req.body;
+      const { movieID, id } = req.body;
       await pool.query(
-        sql`delete from watchlist where user_id=${req.user.id} and movie_id=${movieID}`
+        sql`delete from watchlist where user_id=${id} and movie_id=${movieID}`
       );
 
       return res.json({ success: true });
@@ -49,23 +47,17 @@ app.post(
   }
 );
 
-app.get("/getWatchlist", authenticateToken, async (req: CustomRequest, res) => {
+app.get("/get", async (req: CustomRequest, res) => {
   try {
     let watchlist: any = await pool.any(sql`
       select 
-        movies.*,
-        ARRAY_AGG(type) genre
+        watchlist.movie_id
       from 
-        users inner join watchlist on users.id=watchlist.user_id 
-        inner join movies on watchlist.movie_id = movies.id 
-        left join movie_genre on movies.id = movie_genre.movie_id
-        left join genre on movie_genre.genre_id = genre.id
+        watchlist
       where 
-        users.id=${req.user.id}
-      group by
-        movies.id
+        watchlist.user_id=${(req as any).query.id}
       order by 
-        movies.created_at desc
+        watchlist.created_at desc
       limit
         ${req.query.limit} offset ${(req.query.pageNum - 1) * Number(req.query.limit)}
     `);
