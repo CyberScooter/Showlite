@@ -4,6 +4,7 @@ CREATE DATABASE reviews;
 
 CREATE TABLE "review" (
   "id" SERIAL PRIMARY KEY,
+  "title" varchar,
   "user_id" int,
   "movie_id" int,
   "rating" int,

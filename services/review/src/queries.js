@@ -1,11 +1,18 @@
 const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'root',
-  host: 'localhost',
-  database: 'reviews',
-  password: '123456',
-  port: 5438,
-})
+const url = require('url')
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1]
+};
+
+
+const pool = new Pool(config);
 
 
 const get_review = (request, response) => {
@@ -30,7 +37,7 @@ const get_review = (request, response) => {
     )
 }
 
-  // Insert movie review in database
+// Insert movie review in database
 const insert_review = (request, response) => {
     const { user_id, movie_id, rating, comment, title } = request.body
      pool.query(

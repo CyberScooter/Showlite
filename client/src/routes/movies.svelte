@@ -1,63 +1,46 @@
 <script>
     import MovieInfo from '../components/MovieInfo.svelte';
 	import Pagination from '../components/Pagination.svelte';
+	import http from "$lib/http";
+	import { onMount } from 'svelte';
+	let serverError;
 
-	let rows = [{
-		title: "Test1",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		cover_url: '',
-		description: 'Test description'
-	},
-	{
-		title: "Test2",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},
-	{
-		title: "Test3",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},
-	{
-		title: "Test4",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	},{
-		title: "Test5",
-		year: 2010,
-		rating: 3,	
-		genre: ['Action'],
-		description: 'Test description'
-	}]
+	let rows = []
 
-	
 	let page = 0;
 
-	async function load(_page) {
-		// const data = await getData(_page, pageSize, text, sorting);
-		const data = [{id: "yes"}, {id: "no"}]
-		// rows = data.rows;
+	onMount( async () => {
+		const data = await http(fetch)(`movies/get?page=${page+1}&size=10`);
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
 		rows = data
-		// rowsCount = data.rowsCount
-		// rowsCount = data.length;
+	})
+
+	async function load(p) {
+		const data = await http(fetch)(`movies/get?page=${p+1}&size=10`);
+
+		if(data.error){
+			serverError = data.error
+			return
+		}
+
+		if(data.length == 0){
+			page = p - 1
+		}else{
+			rows = data
+		}
+
   	}
 
-	function onPageChange(event) {
-		load(event.detail.page);
-			page = event.detail.page;
+	function onPageChange({detail}) {
+		load(detail.page);
+			page = detail.page;
   	}
 
-	function filter(event) {
-
-	}
 </script>
 
 <svelte:head>
@@ -79,9 +62,9 @@
 				<div class="flex-grow border-t border-gray-400" />
 			</div>
 
-            <div class="mb-2">
+            <!-- <div class="mb-2">
                 <h1><span class="font-bold">Filter by: </span><a href="#" on:click={() => filter("Release Date")}>Release Date</a> | <a href="#" on:click={() => filter("User Rating")}>User Rating</a> | <a href="#" on:click={() => filter("popularity")}>Popularity</a> | <a href="#" on:click={() => filter("alphabet")}>A-Z</a> </h1>
-            </div>
+            </div> -->
 
 			<div class="relative flex py-3 items-center">
 				<Pagination {page} on:pageChange={onPageChange}/>

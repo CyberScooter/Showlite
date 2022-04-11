@@ -13,11 +13,13 @@
 </script>
 
 <div class="grid grid-cols-6 mb-4">
-	<div class="col-span-1 auto-cols-min mr-5">
+	<div class="col-span-2 auto-cols-min mr-5">
 		<img
-			src="https://image.tmdb.org/t/p/w185{data.posterUrl}"
+			src="{data.posterUrl != undefined ? `https://image.tmdb.org/t/p/w185${data.posterUrl}` : null}"
 			alt="Movie Cover"
 			class="object-cover object-center w-48 h-238 mr-0"
+			height="300"
+			width="400"
 		/>
 
 		<button 

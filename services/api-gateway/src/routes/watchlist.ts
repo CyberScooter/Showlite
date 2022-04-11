@@ -16,6 +16,8 @@ app.post('/add', authenticateToken, async (req, res) => {
           id: (req as any).user.id
         }
     )
+
+    console.log(data);
     return res.json(data)
 
     }catch(_){

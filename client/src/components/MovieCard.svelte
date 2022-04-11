@@ -14,12 +14,12 @@
 <div class="block">
 <div>
 	<div 
-		class="cursor-pointer flex flex-shrink-0 relative w-full sm:w-auto"
+		class="{!onMoviePage? "cursor-pointer" : ""} flex flex-shrink-0 relative w-full sm:w-auto"
 		
 	>
 		<div on:click={goto(`/movie/${data.id}`)}>
 			<img
-				src="https://image.tmdb.org/t/p/w185{data.posterUrl}"
+				src="{`https://image.tmdb.org/t/p/w185${data.posterUrl}`}"
 				alt="/film-poster-placeholder.png"
 				class="object-cover object-center w-96 min-w-full min-h-full h-full shadow-lg align-top max-h-xs max-w-xs"
 			/>
@@ -45,7 +45,7 @@
 		on:click={goto(`/movie/${data.id}`)}
 	>
 		<img
-			src="https://image.tmdb.org/t/p/w185{data.posterUrl}"
+			src="{data.posterUrl != undefined ? `https://image.tmdb.org/t/p/w185${data.posterUrl}` : null}"
 			alt="/film-poster-placeholder.png"
 			class="object-cover object-center w-120 h-120 h-full shadow-lg"
 		/>

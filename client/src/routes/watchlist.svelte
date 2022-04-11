@@ -6,7 +6,22 @@
 				status: 302,
 			};
 		}
-		return {}
+
+		const data = await http(fetch)(`watchlist/get?pageNum=1&limit=6`);
+
+		if(data.error){
+			return {
+				props: {
+					serverError: data.error
+				}
+			}
+		}
+
+		return {
+			props: {
+				rows: data.movies
+			}
+		}
 	};
 </script>
 
@@ -15,21 +30,11 @@
 	import Pagination from '../components/Pagination.svelte';
 	import http from "$lib/http";
 	import MovieInfoWatchlist from '../components/MovieInfoWatchlist.svelte';
-	let serverError; 
+	export let serverError; 
 	let page = 0;
 
-	let rows = []
+	export let rows = []
 
-	onMount(async ()=> {
-		const data = await http(fetch)(`watchlist/get?pageNum=${page+1}&limit=6`);
-		console.log(data);
-		if(data.error){
-			serverError = data.error
-			return
-		}
-
-		rows = data.movies
-	})
 
 	async function load(p) {
 		const data = await http(fetch)(`watchlist/get?pageNum=${p+1}&limit=6`);
@@ -39,7 +44,7 @@
 			return
 		}
 
-		if(data.length == 0){
+		if(data.movies.length == 0){
 			page = p - 1
 		}else{
 			rows = data.movies

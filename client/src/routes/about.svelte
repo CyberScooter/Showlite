@@ -29,15 +29,19 @@
 
             <p class="text-xl mb-6">This project was made for COM3014 Coursework 2 and for movie lovers 💕.</p>
 
-			<p class="mb-4 text-2xl italic">This project was made possible by:</p>
+			<p class="mb-4 text-2xl italic">Front-end made possible by:</p>
 
 			<div class="ml-5 text-xl">
 				<ul class="list-disc">
 					<li>Andy Lee</li>
 					<li>Hrithik Udae Lacximicant</li>
-                    <li>..And lots of Coffee ☕</li>
 				</ul>
 			</div>
+
+			<p class="font-bold text-3xl mt-4">Credits</p>
+			<p class="mb-4 text-2xl italic">Dataset used is publicly available on Kaggle, Link:</p>
+			<a target="_blank" class="text-blue-600 font-bold mt-4" href="https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset?select=links.csv">https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset?select=links.csv</a>
+
 		</div>
 	</div>
 </div>

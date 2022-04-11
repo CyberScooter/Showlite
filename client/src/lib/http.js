@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import { browser } from '$app/env';
 
 function requestHandler(f, access_token) {
 	let headers = { 'Content-Type': 'application/json' };
@@ -9,17 +10,18 @@ function requestHandler(f, access_token) {
 		headers['authorization'] = `Bearer ${Cookie.get('access_token')}`;
 	}
 	return async function (route, method, data) {
-		let server = route.split('/')[0];
-		let baseURL = 'http://localhost:5010/';
-		if (server == 'user') {
-			if(route.split("/")[1] == "data"){
-				baseURL= 'http://localhost:5010/'
-				// baseURL = 'http://auth-server:5000/'
-			}
-		}
+		// let server = route.split('/')[0];
+		let baseURL = browser ? 'http://localhost:5010/' : 'http://api-gateway:5010/'
 
 
-		console.log(`${baseURL}${route}`);
+		// if (server == 'user') {
+		// 	if(route.split("/")[1] == "data"){
+		// 		// baseURL= 'http://localhost:5010/'
+		// 		baseURL = 'http://api-gateway:5010/'
+		// 	}
+		// }
+
+		// console.log(`${baseURL}${route}`);
 		// console.log(Cookie.get('access_token'));
 
 		return (

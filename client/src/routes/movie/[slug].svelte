@@ -1,3 +1,35 @@
+<script context="module">
+	/** @type {import('./[slug]').Load} */
+	export async function load({ params, fetch }) {
+
+        if (params.slug === 'favicon.png') {
+            return { redirect: '/', status: 302 };
+        }
+
+		const data = await http(fetch)(`movies/${params.slug}`);
+		const comments = await http(fetch)(`reviews/get?page=1&movieID=${params.slug}`)
+
+		console.log(comments);
+
+		if(data.error || comments.error){
+			return {
+				props: {
+					error: comments.error ? comments.error : data.error
+				}
+			}
+		}
+
+		return {
+			props: {
+				movieInfo: data,
+				rating: data.rating,
+				rows: comments
+			}
+		};
+	}
+  </script>
+
+
 <script>
 	import MovieCard from '../../components/MovieCard.svelte';
 	import CommentBox from '../../components/CommentBox.svelte';
@@ -12,39 +44,19 @@
 	const auth = getContext("store");
 	const getAuth = auth.state;
 
-	let movieInfo = {}
+	export let movieInfo = {}
 	let form = {
 		title: '',
-		review: '',
-		rating: 0
+		comment: '',
 	}
 	let selectedRating = 0;
-	let rows = []
+	export let rows = []
 	let page = 0;
-	let error;
-	let rating = 0;
+	export let error;
+	export let rating = 0;
 	let serverError;
-
-	onMount(async () => {
-		const data = await http(fetch)(`movies/${$pageProperties.params.slug}`);
-		if(data.error){
-			error = data.error
-			return
-		}
-
-		const comments = await http(fetch)(`reviews/get?page=1&movieID=${$pageProperties.params.slug}`)
-
-		if(comments.error){
-			error = data.error
-			return
-		}
-
-		rows = comments
-		movieInfo = data
-		rating = movieInfo.rating
-
-	})
-
+	let success;
+	
 	async function load(p) {
 		const data = await http(fetch)(`reviews/get?page=${p+1}&movieID=${$pageProperties.params.slug}`);
 
@@ -72,7 +84,7 @@
 		});
 
 		if(data.error){
-			return
+			serverError = data.error
 		}else {
 			goto("/watchlist")
 		}
@@ -80,39 +92,47 @@
 	}
 
 	async function addComment(){
-		let el = {
-			title: form.title,
-			username: $getAuth.user.username,
-			created_at: Date.now(),
-			rating: selectedRating,
-			comment: form.comment
-		}	
+		if(!!form.title && !!form.comment){
+			let el = {
+				title: form.title,
+				username: $getAuth.user.username,
+				created_at: Date.now(),
+				rating: selectedRating,
+				comment: form.comment
+			}	
 
-		const data = await http(fetch)("reviews/add", "POST", {
-			movie_id: $pageProperties.params.slug,
-			rating: el.rating,
-			comment: el.comment,
-			title: el.title
-		});
+			const data = await http(fetch)("reviews/add", "POST", {
+				movie_id: $pageProperties.params.slug,
+				rating: el.rating,
+				comment: el.comment,
+				title: el.title
+			});
 
-		if(data.error){
-			serverError = data.error
-			return
+			if(data.error){
+				serverError = data.error
+				return
+			}
+
+			el = {... el, id: data.id, rating: parseInt(el.rating) }
+			if(data.newRating != 0){
+				rating = parseInt(data.newRating)
+			}
+
+			if(rows.length == 5){
+				load(page+1)
+				return
+			}
+			
+			let temp = rows
+			temp.unshift(el)
+			rows = temp
+
+			form.title= ""
+			form.comment= ""
+			selectedRating = 0
+
+			success = "Review added"
 		}
-
-		el = {... el, id: data.id, rating: parseInt(el.rating) }
-		if(data.newRating != 0){
-			rating = parseInt(data.newRating)
-		}
-
-		if(rows.length == 5){
-			load(page+1)
-			return
-		}
-		
-		let temp = rows
-		temp.unshift(el)
-		rows = temp
 
 	}
 
@@ -136,7 +156,7 @@
 
 		rating = parseInt(data.newRating)
 	}
-	
+
 </script>
 
 <svelte:head>
@@ -149,9 +169,10 @@
 	<div
 		class="container mx-auto shadow-xl border-2 border-transparent shadow-2xl bg-white bg-opacity-80 h-auto"
 	>
-	{#if !!!error}
+	{#if movieInfo != undefined}
 		<div class="ml-20 mr-20">
 			<h1 class="text-5xl mt-10 mb-5">{movieInfo.title}</h1>
+
 			<!-- (rating, name, description, cover_url, year, created_at, updated_at) -->
 			<div class="flex text-xl">
 				<!-- <div class="hidden ...">01</div> -->
@@ -163,15 +184,15 @@
 				<div class="flex-grow border-t border-gray-400" />
 			</div>
 
-			<div class="flex grid grid-cols-12">
-				<div class="col-span-3">
+			<div class="flex grid lg:grid-cols-2 md:lg:grid-cols-2 sm:lg:grid-cols-2">
+				<div class="place-items-center">
 					<MovieCard cover_size={'large'} data={movieInfo} onMoviePage={true} />
 					<StarRating rating={rating} config={{ size: 18}} />
-					
-				</div>
-
-				<div on:click={addToWatchlist} class="cursor-pointer col-span-1">
-					<img src="/watchlist-button.png" alt="Add to watchlist"  class="flex" />
+					{#if $getAuth.authenticated}
+						<span on:click={addToWatchlist} class="cursor-pointer ">
+							<img src="/watchlist-button.png" alt="Add to watchlist"  class="m-0" width="100" height="100"/>
+						</span>
+					{/if}
 				</div>
 
 				<div class="col-span-8 text-xl">
@@ -179,7 +200,14 @@
 						{movieInfo.description}
 					</h1>
 				</div>
+
+
+				{#if !!serverError}
+					<p class="text-red-600 font-bold">{serverError}</p>
+				{/if}
+
 			</div>
+
 
 			{#if $getAuth.authenticated}
 
@@ -231,6 +259,10 @@
 						<button class="px-3 py-2 text-sm text-blue-100 bg-blue-600 rounded">Submit</button>
 					</form>
 				</div>
+
+			{#if success}
+				<p class="text-green-600 font-bold">{success}</p>
+			{/if}
 
 			<div class="relative flex py-5 items-center">
 				<div class="flex-grow border-t border-gray-400" />
