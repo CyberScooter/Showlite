@@ -27,8 +27,7 @@ app.get('/get', async (req, res) => {
     
     return res.json(temp)
 
-    }catch(e){
-      // console.log(e);
+    }catch(_){
       return res.json({error: "Internal server error"})
     }
   })

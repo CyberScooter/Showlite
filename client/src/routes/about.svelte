@@ -25,7 +25,7 @@
 				on different movies in the database using the review system, where movie recommendations, popularity, and genres will be shown.
 			</p>
 
-            <p class="text-xl mb-6">Technologies being used in this project include Svelte (front-end), Node.js (back-end), Python (microservices), and PostgreSQL (database).</p>
+            <p class="text-xl mb-6">Technologies being used in this project include Svelte front-end, Python and Express.js microservices each with a PostgreSQL database. Finally an api-gateway to connect the frontend with the appropriate microservices.</p>
 
             <p class="text-xl mb-6">This project was made for COM3014 Coursework 2 and for movie lovers 💕.</p>
 

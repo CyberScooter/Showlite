@@ -17,7 +17,6 @@ app.post('/add', authenticateToken, async (req, res) => {
         }
     )
 
-    console.log(data);
     return res.json(data)
 
     }catch(_){
@@ -58,8 +57,6 @@ app.post('/add', authenticateToken, async (req, res) => {
           )
           movies.push(data)
         }
-
-        console.log(movies);
 
         return res.json({movies})
     }catch(e){

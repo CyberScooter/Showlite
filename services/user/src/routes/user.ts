@@ -77,8 +77,7 @@ app.get("/data", async (req, res) => {
     delete userFound.email;
 
     return res.json(userFound);
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
     return res.json({ error: "Internal server error" });
   }
 });

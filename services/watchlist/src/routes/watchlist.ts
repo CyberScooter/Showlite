@@ -63,8 +63,7 @@ app.get("/get", async (req: CustomRequest, res) => {
     `);
 
     return res.json(watchlist);
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
     return res.json({ error: "Internal server error" });
   }
 });
