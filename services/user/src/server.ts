@@ -7,7 +7,7 @@ import UserOperations from "./routes/user";
 
 const app = express();
 const PORT = 5000;
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "http://localhost:5010" }));
 
 app.use(
   express.urlencoded({

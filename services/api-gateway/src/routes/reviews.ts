@@ -8,10 +8,9 @@ let app = express.Router()
 
 app.get('/get', async (req, res) => {
   try{
-    let comments = []
     const {page, movieID } = req.query
     const {data} = await axios.get(
-      `${reviewsURL}getreviews?page=${page}&movieID=${movieID}`
+      `${reviewsURL}getreviews?page=${Number(page)}&movieID=${Number(movieID)}`
     )
     let temp = data
 

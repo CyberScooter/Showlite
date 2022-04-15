@@ -19,22 +19,24 @@ const get_review = (request, response) => {
   const movieID = request.query.movieID
   const pagenumber = request.query.page
 
-    pool.query(
-        `SELECT 
-        *
-        FROM review
-        WHERE movie_id=$1
-        ORDER BY review.created_at DESC
-        LIMIT 5
-        OFFSET ($2 - 1) * 5;`,
-        [movieID, pagenumber],  
-        (error, results) => {
-            if (error) {
-              return response.json({error: "Internal server error"})
-            }
-          return response.status(200).json(results.rows)
-        }
-    )
+  pool.query(
+      `SELECT 
+      *
+      FROM review
+      WHERE movie_id=$1
+      ORDER BY review.created_at DESC
+      LIMIT 5
+      OFFSET ($2 - 1) * 5;`,
+      [movieID, pagenumber],  
+      (error, results) => {
+          if (error) {
+            return response.json({error: "Internal server error"})
+          }
+        return response.status(200).json(results.rows)
+      }
+  )
+
+
 }
 
 // Insert movie review in database

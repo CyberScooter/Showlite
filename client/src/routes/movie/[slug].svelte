@@ -9,8 +9,6 @@
 		const data = await http(fetch)(`movies/${params.slug}`);
 		const comments = await http(fetch)(`reviews/get?page=1&movieID=${params.slug}`)
 
-		console.log(comments);
-
 		if(data.error || comments.error){
 			return {
 				props: {
@@ -25,7 +23,8 @@
 				rating: data.rating,
 				rows: comments
 			}
-		};
+		}
+
 	}
   </script>
 
