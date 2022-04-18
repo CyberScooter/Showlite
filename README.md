@@ -14,7 +14,7 @@
 <ol>
   <li>cd to root folder</li>
   <li>docker-compose up --build</li>
-  <li>Wait for movie service to load and seed data, may take a couple of seconds</li>
+  <li>Wait to build, may take a couple of seconds/minutes</li>
 </ol>
 
 <h3>Registered accounts:</h3>
