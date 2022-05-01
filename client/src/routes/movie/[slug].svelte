@@ -7,12 +7,11 @@
         }
 
 		const data = await http(fetch)(`movies/${params.slug}`);
-		const comments = await http(fetch)(`reviews/get?page=1&movieID=${params.slug}`)
 
-		if(data.error || comments.error){
+		if(data.error){
 			return {
 				props: {
-					error: comments.error ? comments.error : data.error
+					error: data.error
 				}
 			}
 		}
@@ -20,8 +19,7 @@
 		return {
 			props: {
 				movieInfo: data,
-				rating: data.rating,
-				rows: comments
+				rating: data.rating
 			}
 		}
 
@@ -56,8 +54,20 @@
 	let serverError;
 	let success;
 	
+	onMount(async () => {
+		const comments = await http(fetch)(`reviews/get?page=1&movieID=${$pageProperties.params.slug}`)
+
+		if(comments.error){
+			error = comments.error
+		}
+
+		rows = comments
+
+	})
+	
 	async function load(p) {
 		const data = await http(fetch)(`reviews/get?page=${p+1}&movieID=${$pageProperties.params.slug}`);
+
 
 		if(data.error){
 			error = data.error

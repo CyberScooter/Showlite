@@ -13,7 +13,7 @@ export const handle = async ({ event, resolve }) => {
 /** @type {import('@sveltejs/kit').GetSession} */
 export async function getSession(req) {
 	const context = req.locals;
-	let data;
+	let data = {};
 
 	// @ts-ignore
 	let authenticated = !!context.access_token ? true : false;
